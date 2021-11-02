@@ -1,0 +1,311 @@
+{
+  "configurations": [
+    {
+      "name": "Start requerimientopesca",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/requerimientopesca",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "DEBUG": "--inspect",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopesca\"}"
+      }
+    },
+    {
+      "name": "Start requerimientopesca Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/requerimientopesca",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-mock"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopesca\"}"
+      }
+    },
+    {
+      "name": "Start requerimientopesca Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/requerimientopesca",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-local"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopesca\"}"
+      }
+    },
+    {
+      "name": "requerimientopesca",
+      "cwd": "${workspaceFolder}/requerimientopesca",
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "args": [
+        "--",
+        "--ui5"
+      ],
+      "windows": {
+        "runtimeExecutable": "npm.cmd",
+        "args": [
+          "--",
+          "--ui5"
+        ]
+      },
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopesca\"}"
+      }
+    },
+    {
+      "name": "requerimientopesca",
+      "cwd": "${workspaceFolder}/requerimientopesca",
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "args": [
+        "--",
+        "--ui5"
+      ],
+      "windows": {
+        "runtimeExecutable": "npm.cmd",
+        "args": [
+          "--",
+          "--ui5"
+        ]
+      },
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopesca\"}"
+      }
+    },
+    {
+      "name": "Start requerimientopescaxplanta",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/requerimientopescaxplanta",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "DEBUG": "--inspect",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopescaxplanta\"}"
+      }
+    },
+    {
+      "name": "Start requerimientopescaxplanta Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/requerimientopescaxplanta",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-mock"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopescaxplanta\"}"
+      }
+    },
+    {
+      "name": "Start requerimientopescaxplanta Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/requerimientopescaxplanta",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-local"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/requerimientopescaxplanta\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "DEBUG": "--inspect",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-mock"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-local"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "DEBUG": "--inspect",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-mock"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    },
+    {
+      "name": "Start distribucionflota Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/distribucionflota",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run-script",
+        "start-local"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/DistribucionFlotaQAS/distribucionflota\"}"
+      }
+    }
+  ],
+  "compounds": [],
+  "inputs": [
+    {
+      "id": "UI5Version",
+      "type": "command",
+      "command": "sap.ux.appGenerator.ui5Version"
+    }
+  ],
+  "version": "0.2.0"
+}

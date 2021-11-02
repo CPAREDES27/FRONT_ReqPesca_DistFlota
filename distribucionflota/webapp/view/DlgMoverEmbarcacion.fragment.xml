@@ -1,0 +1,89 @@
+
+<core:FragmentDefinition xmlns:core="sap.ui.core"  xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc">
+    <Dialog horizontalScrolling="true"  showHeader="true" state="None" stretch="false" title="Mover embarcaciones" type="Standard" verticalScrolling="true" >
+        <content>
+            <form:Form width="1132.71875px" editable="true" visible="true">
+                <form:title/>
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Cod. Puerto" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+								<ComboBox  selectedKey="{modelDistFlota>/planta_aux}" id="cbo_planta_aux" editable="true" enabled="true" visible="true" width="50%"
+									valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListPlantaCbo' }">
+									<items>
+										<core:Item text="{modelDistFlota>descPlanta}" enabled="true" key="{modelDistFlota>codPlanta}"/>
+									</items>
+								</ComboBox>                                
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                    
+                </form:formContainers>
+                
+                <form:layout>
+                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                </form:layout>
+            </form:Form>
+            <Table id="sap_Responsive_Page_0-content-build_simple_Table-1628124395481" width="1090px" noDataText="No data" mode="None" showSeparators="All" class="sapUiSmallMargin"
+            items="{path:'modelDistFlota>/EmbarcacionesSelectas', templateShareable:true}" >
+                <infoToolbar>
+                    <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                        <content>
+                            <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </content>
+                    </Toolbar>
+                </infoToolbar>
+                <columns>
+                    <Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Embarcación" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="CBOD" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Planta" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Pesc Decl" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                </columns>
+                <items>
+                        <ColumnListItem type="Active">
+                            <cells>
+                                <Text text="{modelDistFlota>descEmba}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelDistFlota>cbodEmba}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelDistFlota>nomPlanta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelDistFlota>pescDecl}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </cells>
+                        </ColumnListItem>
+                    
+                </items>
+            </Table>
+        </content>
+        <beginButton/>
+        <buttons>
+            <Button text="Aceptar" type="Accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_PressMoverEmbarcacion"/>
+            <Button text="Cancelar" type="Reject" icon="sap-icon://begin" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onCloseDialogMovEmbarcacion"/>
+        </buttons>
+        <customHeader/>
+        <endButton/>
+        <subHeader/>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,145 @@
+
+<core:FragmentDefinition xmlns:core="sap.ui.core"  xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout">
+    <Dialog horizontalScrolling="true" showHeader="true" state="None" stretch="false" title="Requerimiento Pesca" type="Standard" verticalScrolling="true">
+        <content>
+            <form:Form width="1132.71875px" editable="true" visible="true">
+                <form:title/>
+                <form:formContainers>
+                    <form:FormContainer visible="false">
+                        <form:formElements>
+                            <form:FormElement visible="true" class="sapUiSmallMargin">
+                                <form:label>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" enabled="true" visible="true" width="55.00000000px" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true" class="sapUiSmallMargin">
+                                <form:label>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="Field" width="174.72000000px" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="Field" width="117.72000000px" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="Field" width="82.859375px" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Requerimiento" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/NRREQ}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0" />
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Fecha" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <DatePicker width="50%" value="{modelReqPesca>/NewReg/FHREQ}" class="sapUiSmallMarginBottom" displayFormat="dd/MM/yyyy" valueFormat="ddMMyyyy" />
+                                   <!-- <DatePicker width="50%" displayFormat="dd/MM/yyyy" value="{modelReqPesca>/NewReg/FHREQ}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="ddMMyyyy"/> -->
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Planta" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/CDPTA}" enabled="true" visible="true" width="50%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/>
+                                    <!--<Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/WERKS}" editable="false" enabled="true" visible="true" width="80%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/>-->
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Cant. requerida" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/CNPRQ}" enabled="true" visible="true" width="91.5%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <Label text="{modelReqPesca>/NewReg/CNPRQ}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Estado" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox editable="true" enabled="true" selectedKey="{modelReqPesca>/NewReg/ESREG}" visible="true" width="50%" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="Válido" enabled="true" key="S"/>
+                                            <core:Item text="Anulado" enabled="true" key="A"/>
+                                        </items>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{modelReqPesca>/VisibleAuditoria}">
+                                <form:label>
+                                    <Label text="Fecha creación" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/FHCRN}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{modelReqPesca>/VisibleAuditoria}">
+                                <form:label>
+                                    <Label text="Usuario creación" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/ATCRN}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{modelReqPesca>/VisibleAuditoria}">
+                                <form:label>
+                                    <Label text="Fecha modificación" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/FHMOD}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>
+                             <form:FormElement visible="{modelReqPesca>/VisibleAuditoria}"> 
+                                <form:label>
+                                    <Label text="Usuario modificación" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/ATMOD}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+                <form:layout>
+                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                </form:layout>
+            </form:Form>
+        </content>
+        <beginButton/>
+        <buttons>
+            <Button text="Guardar" type="Accept"  icon="sap-icon://save" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onAceptarButtonPress"/>
+            <Button text="Cancelar" type="Reject" icon="sap-icon://begin" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onCloseDialogNewReg"/>
+        </buttons>
+        <customHeader/>
+        <endButton/>
+        <subHeader/>
+    </Dialog>
+</core:FragmentDefinition>

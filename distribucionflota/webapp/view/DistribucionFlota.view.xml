@@ -1,0 +1,375 @@
+<mvc:View
+    controllerName="tasa.com.distribucionflota.controller.DistribucionFlota" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
+	xmlns:t="sap.ui.table" xmlns:dnd="sap.ui.core.dnd" height="100%" xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:ui="sap.ui.table" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:variants="sap.ui.comp.variants" >
+    
+<App>
+    <pages>
+        <Page showHeader="true" title="Distribución de Flota" showFooter="false" showNavButton="false">
+            <Label text="{modelDistFlota>/Now}" visible="true" />
+            <headerContent>
+                <Button tooltip="Emphasized" text="Actualizar" icon="sap-icon://refresh" press="onSelectionFilter"/>
+                <Button tooltip="Emphasized" text="Mover Embarcación" icon="sap-icon://display-more" press="_onOpenDialogMovEmbarcacion"/>
+            </headerContent>
+            <content>
+			<form:Form editable="true">
+				<form:layout>
+					<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="4" singleContainerFullSize="true"/>
+				</form:layout>
+				<form:formContainers>
+					<form:FormContainer>
+						<form:formElements>
+							<form:FormElement label="Ind propiedad">
+								<form:fields>
+										<ComboBox  selectedKey="{modelDistFlota>/Search/indProp}" id="cbo_filter_indprp" editable="true" enabled="true" visible="true" width="auto"
+											valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListIndPropiedad' }">
+											<items>
+												<core:Item text="{modelDistFlota>descripcion}" enabled="true" key="{modelDistFlota>id}"/>
+											</items>
+										</ComboBox>
+							    </form:fields>
+						    </form:FormElement>  
+                            <form:FormElement label="Embarcación" visible="true" >
+                                <form:fields>
+                                    <SearchField search="BuscarEmbarcacion" value="{modelDistFlota>/Search/Embarcacion}" suggest=".onSuggest" enableSuggestions="true" id="txt_filter_Numope" placeholder="" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>                                             
+					</form:formElements>
+				</form:FormContainer>
+				<form:FormContainer>
+					<form:formElements>
+						<form:FormElement label="Motivo marea">
+							<form:fields>
+										<ComboBox id="cbo_filter_motMarea"  selectedKey="{modelDistFlota>/Search/motMarea}" editable="true" enabled="true" visible="true" width="auto"
+											valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListTipoMarea' }">
+											<items>
+												<core:Item text="{modelDistFlota>descripcion}" enabled="true" key="{modelDistFlota>id}"/>
+											</items>
+										</ComboBox>
+                            </form:fields>
+                        </form:FormElement>                      
+						<form:FormElement label="ZonaArea" visible="true" >
+                            <form:fields>
+										<ComboBox selectedKey="{modelDistFlota>/Search/zonaArea}" id="cbo_filter_ZonaArea"  editable="true" enabled="true" visible="true" width="auto"
+											valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListZonaArea' }">
+											<items>
+												<core:Item text="{modelDistFlota>ZDSZAR}" enabled="true" key="{modelDistFlota>ZCDZAR}"/>
+											</items>
+										</ComboBox>
+                            </form:fields>
+						</form:FormElement>                        
+                    </form:formElements>
+                </form:FormContainer>
+                <form:FormContainer>
+                        <form:formElements>    
+                            <form:FormElement label="Tipo Embarcación">
+                                            <ComboBox selectedKey="{modelDistFlota>/Search/tipoEmba}" id="cbo_filter_Tipemb"  editable="true" enabled="true" visible="true" width="auto"
+                                                valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListTipoEmba' }">
+                                                <items>
+                                                    <core:Item text="{modelDistFlota>DESCR}" enabled="true" key="{modelDistFlota>CDTEM}" />
+                                                </items>
+                                            </ComboBox>
+                            </form:FormElement>                                                                        
+                            <form:FormElement label="Num filas" visible="{=${localModel>/bVisibleTableGuiasDescarga} === true ? false : true}" >
+                                <form:fields>
+                                    <HBox >
+										<ComboBox selectedKey="{modelDistFlota>/Search/cdplta}" id="cbo_filter_codPlanta"  editable="true" enabled="true" visible="true" width="auto"
+											valueState="None" maxWidth="100%" items="{ path : 'modelDistFlota>/ListPlantaCbo' }">
+											<items>
+												<core:Item text="{modelDistFlota>descPlanta}" enabled="true" key="{modelDistFlota>codPlanta}" />
+											</items>
+										</ComboBox>
+                                        <Input  id="txt_RowCount" value="{modelDistFlota>/Search/numfilas}" type="Text" placeholder="" maxLength="0"/>
+                                    </HBox>
+                                </form:fields>
+                            </form:FormElement>                       
+                        </form:formElements>
+                </form:FormContainer>            
+                <form:FormContainer>
+                    <form:formElements>
+						<form:FormElement label="Tdc-ZonaP-SistFrio" visible="{=${localModel>/bVisibleTableGuiasDescarga} === true ? false : true}" >
+							<form:fields>
+                                        <MultiComboBox selectionChange="handleSelectionChange" width="350px">
+                                            <core:Item key="T" text="Tdc"/>
+                                            <core:Item key="ZP" text="ZonP"/>
+                                            <core:Item key="SF" text="Sist Frio"/>
+
+                                        </MultiComboBox>
+                            </form:fields>
+						</form:FormElement>
+                        <!--
+                            <form:FormElement label="Num filas" visible="true" >
+                                <form:fields>
+                                    <Input  id="txt_RowCount" value="{modelDistFlota>/Search/numfilas}" type="Text" placeholder="" maxLength="0"/>
+                                </form:fields>
+                            </form:FormElement>   
+                        -->                                                                                                                                                    
+                        </form:formElements>
+                </form:FormContainer>
+                </form:formContainers>
+            </form:Form>
+            <Button text="Nr2" visible="false" type="Emphasized" press="BuscarTable"/>     
+		    <Button text="Mover Embarcación" visible="false" type="Emphasized" press="_onOpenDialogMovEmbarcacion"/>
+			<HBox width="100%">
+				<HBox id="hBoxContent3" renderType="Bare" width="100%">
+                    <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true"
+                        selectedKey="Ok">
+                        <items>
+                            <IconTabFilter text="Resumen" count="" design="Vertical" showAll="false"
+                                textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+                                <content>
+                                    <HBox width="100%">
+                                        <HBox id="hBoxContent1" renderType="Bare" width="50%">
+                                            <Panel expandable="true" headerText="Resumen por Plantas" width="auto" expanded="true">
+                                                <content>
+                                                    <IconTabBar expandable="true" expanded="true" applyContentPadding="false"  backgroundDesign="Solid" upperCase="false" visible="true"
+                                                        selectedKey="Ok">
+                                                        <items>
+                                                            <IconTabFilter text="Total" count="" showAll="false" key="All" design="Vertical">
+                                                                <content>
+                                                                    <Table id="table" inset="false" items="{modelDistFlota>/listTotal}">
+                                                                        <columns>
+                                                                            <Column width="150px">
+                                                                                <Text text="Planta"/>
+                                                                                <footer>   
+                                                                                    <Text id="idFoote2" text="Total General:"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Cbod"/>
+                                                                                <footer>
+                                                                                    <Text text="{modelDistFlota>/totCbodTodos}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Decl"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totDeclTodos}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="EP"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totEPTodos}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="%"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totPorcTodos}" visible="false"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="DIF"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totDifTodos}" visible="false"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                        </columns>
+                                                                        <items>
+                                                                            <ColumnListItem>
+                                                                                <cells>
+                                                                                    <Text text="{modelDistFlota>descPlanta}" class="sapMTextEMB" />
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>cbodProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>pescDeclProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>embaPescProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{modelDistFlota>porcTodos}"></Text>
+                                                                                    <Text text="{modelDistFlota>dif}" />
+                                                                                </cells>
+                                                                            </ColumnListItem>
+                                                                        </items>
+                                                                    </Table>
+                                                                </content>
+                                                            </IconTabFilter>
+                                                            <IconTabFilter text="Prop" count="" showAll="false" key="All" design="Vertical">
+                                                                <content>
+                                                                    <Table id="table2" inset="false" items="{modelDistFlota>/listPropios}">
+                                                                        <columns>
+                                                                            <Column width="150px">
+                                                                                <Text text="Planta"/>
+                                                                                <footer>   
+                                                                                    <Text id="idFo1ot2" text="Total General:"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Cbod"/>
+                                                                                <footer>
+                                                                                    <Text text="{modelDistFlota>/totCbodProp}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Decl"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totDeclProp}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="EP"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totEPProp}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="%"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totPorcProp}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                        </columns>
+                                                                        <items>
+                                                                            <ColumnListItem>
+                                                                                <cells>
+                                                                                    <Text text="{modelDistFlota>descPlanta}"/>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>cbodProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>pescDeclProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>embaPescProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{modelDistFlota>porcPropios}"></Text>
+                                                                                </cells>
+                                                                            </ColumnListItem>
+                                                                        </items>
+                                                                        
+                                                                    </Table>
+                                                                </content>
+                                                            </IconTabFilter>
+                                                            <IconTabFilter text="Terc" count="" showAll="false" key="All" design="Vertical">
+                                                                <content>
+                                                                    <Table id="table3"  inset="false" items="{modelDistFlota>/listTerceros}">
+                                                                        <columns>
+                                                                            <Column width="150px" >
+                                                                                <Text text="Planta"/>
+                                                                                <footer>   
+                                                                                    <Text id="idFo1ot3" text="Total General:"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Cbod"/>
+                                                                                <footer>
+                                                                                    <Text text="{modelDistFlota>/totCbodTerc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Decl"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totDeclTerc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="EP"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totEPTerc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="%"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totPorcTerc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                        </columns>
+                                                                        <items>
+                                                                            <ColumnListItem>
+                                                                                <cells>
+                                                                                    <Text text="{modelDistFlota>descPlanta}"/>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>cbodProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>pescDeclProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>embaPescProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{modelDistFlota>porcTerceros}"></Text>
+                                                                                </cells>
+                                                                            </ColumnListItem>
+                                                                        </items>
+                                                                    </Table>
+                                                                </content>
+                                                            </IconTabFilter>
+                                                            <IconTabFilter text="Desc" count="" showAll="false" key="All" design="Vertical">
+                                                                <content>
+                                                                    <Table id="table4" inset="false" items="{modelDistFlota>/listDescargas}">
+                                                                        <columns>
+                                                                            <Column width="150px">
+                                                                                <Text text="Planta"/>
+                                                                                <footer>   
+                                                                                    <Text id="idFo1ot" text="Total:"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Embarcación"/>
+                                                                                <footer>
+                                                                                    <Text text="" visible="false"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="CBOD"/>
+                                                                                <footer>
+                                                                                    <Text text="{modelDistFlota>/totCbodDesc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Pesc. decl"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totDifDesc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                            <Column>
+                                                                                <Text text="Pesc. desc"/>
+                                                                                <footer>   
+                                                                                    <Text text="{modelDistFlota>/totEPDesc}"/>
+                                                                                </footer>
+                                                                            </Column>
+                                                                        </columns>
+                                                                        <items>
+                                                                            <ColumnListItem>
+                                                                                <cells>
+                                                                                    <Text text="{modelDistFlota>descPlanta}"/>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>cbodProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                    <Text text="{modelDistFlota>dif}"/>
+                                                                                    <Text text="{ parts: [ {path: 'modelDistFlota>embaPescProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
+                                                                                </cells>
+                                                                            </ColumnListItem>
+                                                                        </items>
+                                                                    </Table>
+                                                                </content>
+                                                            </IconTabFilter>
+                                                        </items>
+                                                    </IconTabBar>
+                                                </content>
+                                            </Panel>
+                                        </HBox>
+                                    </HBox>
+                                </content>
+                            </IconTabFilter>
+                            <IconTabFilter text="Distribución" count="" design="Vertical" showAll="false"
+                                textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+                                <content>
+                                    <HBox width="100%">
+                                        <HBox id="hBoxContent2" renderType="Bare" width="100%">
+                                            <IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true"
+                                                selectedKey="Ok">
+                                                <items>
+                                                    
+                                                </items>
+                                            </IconTabBar>
+                                        </HBox>
+                                    </HBox>
+                                </content>
+                            </IconTabFilter>
+                        </items>
+                    </IconTabBar>
+                </HBox>
+            </HBox>
+            </content>
+            <footer>
+                <OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">
+                    <content>
+                        <ToolbarSpacer width=""/>
+                        <Button text="Save" type="Emphasized" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+                        <Button text="Cancel" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+                    </content>
+                </OverflowToolbar>
+            </footer>
+            <headerContent/>
+            <subHeader/>
+            <customHeader/>
+        </Page>
+    </pages>
+</App>
+</mvc:View>

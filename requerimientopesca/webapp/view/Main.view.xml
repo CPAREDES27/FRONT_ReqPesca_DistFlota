@@ -1,0 +1,243 @@
+<mvc:View controllerName="tasa.com.requerimientopesca.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
+	xmlns:t="sap.ui.table" xmlns:dnd="sap.ui.core.dnd" height="100%" xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:ui="sap.ui.table" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:variants="sap.ui.comp.variants" xmlns:Text="sap.m.Text" 
+    xmlns:Number="sap.m.Input">
+        <App>
+         <pages>
+            <Page showHeader="true" title="Requerimiento Pesca" showFooter="false" showNavButton="false">
+            <content>
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:title>
+                        <core:Title text="Selección de Datos" level="Auto"/>
+                    </form:title>
+                    <form:formContainers>
+                        <form:FormContainer visible="true">
+                            <form:formElements>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Num. Requerimiento" labelFor="multiInput1" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <!--
+		                                <MultiInput id="multiInput1" width="50%" showValueHelp="false" maxLength="10" maxTokens="2"/>
+                                        -->
+                                        <HBox>
+                                            <Input type="Text" id="multiInput1" value="{modelReqPesca>/Search/NRREQ1}" showValueHelp="false" enabled="true" visible="true" width="342px" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest=""/>
+                                            <Text text="a" width="20px" textAlign="Center" />
+                                            <Input type="Text" value="{modelReqPesca>/Search/NRREQ2}" showValueHelp="false" enabled="true" visible="true" width="342px" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest=""/>
+                                        </HBox>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">    
+                                    <form:label>
+                                        <Label text="Fecha" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <DateRangeSelection width="50%" id="DRS1" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}" secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>    
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Centro" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Input type="Text" value="{modelReqPesca>/Search/WERKS}" showValueHelp="true" enabled="true" visible="true" width="90.5%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentro"/>
+                                        <Label text="{modelReqPesca>/Search/DESCR}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Número de Filas" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Input type="Number" name="codigo" id="idcodigo" showValueHelp="false" value="{modelReqPesca>/Search/Numfilas}" enabled="true" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="5" />
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Button text="Buscar" type="Default" icon="sap-icon://search" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onButtonPress"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Button text="Limpiar" type="Default" icon="sap-icon://clear-filter" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onButtonPressLimpiar"/>
+                                    </form:fields>
+                                </form:FormElement>
+                            </form:formElements>
+                            <form:title/>
+                        </form:FormContainer>
+                    </form:formContainers>
+                    <form:layout>
+                        <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                    </form:layout>
+                </form:Form>
+                <Table id="tbl_reqpesca" width="auto" noDataText="No data" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="bigLabel" 
+                    items="{path:'modelReqPesca>/ListReqPesca', sorter : [{path: 'NRREQ', descending: true}, {path: 'FHCRN', descending: true}], templateShareable:true}"> 
+                    <infoToolbar>
+                        <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                            <content>
+                                <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </content>
+                        </Toolbar>
+                    </infoToolbar>
+                    <headerToolbar>
+                        <Toolbar width="auto" height="auto" design="Transparent" visible="true" enabled="true">
+                                <Title text="Lista de Registro" titleStyle="Auto" width="auto" textAlign="Begin" visible="true" wrapping="false"/>
+                                <ToolbarSpacer width=""/>
+                                <Button text="Nuevo" type="Default" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_OpenNewReg"/>
+                                <Button press="onExportar" icon="sap-icon://excel-attachment" tooltip="Exportar excel" type="Emphasized"/>
+                                <SearchField placeholder="Busqueda rápida" showSearchButton="true" visible="true" width="auto" search="handleLiveChange"/>
+                                <OverflowToolbarButton text="Settings" type="Transparent" icon="sap-icon://sort" iconFirst="true" width="auto" enabled="true" visible="false" iconDensityAware="false" press="_onOverflowToolbarButtonPress"/>
+                                <OverflowToolbarButton text="Group" type="Transparent" icon="sap-icon://group-2" iconFirst="true" width="auto" enabled="true" visible="false" iconDensityAware="false"/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="9%" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="N° Requerimiento" width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column  width="8%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Fecha" width="50%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="7%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Centro" width="48%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="7%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Planta" width="55%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Unidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="7%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Cant. Req." width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="4.5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Estado" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="8%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="F. Creación" width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="6%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="H. Creación" width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="9%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="U. Creación" width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="8%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="H. Modificación" width="100%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="8%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="F. Modificación" width="90%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="8%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="U. Modificación" width="90%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="6.5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="" width="10%" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true" class="bigLabel"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active"> 
+                            <cells>
+                                <ObjectIdentifier title="" text="{modelReqPesca>NRREQ}" titleActive="false" visible="true"/>
+                                <!--
+                                <Text text="{ parts: [ {path: 'modelReqPesca>FHREQ'}], formatter : '.formatter.formatoFechaString'}"></Text>
+                                -->
+                                <Text text="{modelReqPesca>FHREQ}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>WERKS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>DESCR}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>MEINS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>CNPRQ}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <!--
+                                <Text text="{ parts: [ {path: 'modelReqPesca>DESC_ESREG'}], formatter : '.formatter.formatoEstado'}"></Text>
+                                <Text text="{ parts: [ {path: 'modelReqPesca>FHCRN'}], formatter : '.formatter.formatoFechaString'}"></Text>
+                                <Text text="{ parts: [ {path: 'modelReqPesca>HRCRN'}], formatter : '.formatter.formatoHoraString'}"></Text>
+                                -->
+                                <Text text="{modelReqPesca>DESC_ESREG}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>FHCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>HRCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>ATCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <!--
+                                <Text text="{ parts: [ {path: 'modelReqPesca>HRMOD'}], formatter : '.formatter.formatoHoraString'}"></Text>
+                                <Text text="{ parts: [ {path: 'modelReqPesca>FHMOD'}], formatter : '.formatter.formatoFechaString'}"></Text>
+                                -->
+                                <Text text="{modelReqPesca>HRMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>FHMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Text text="{modelReqPesca>ATMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Button text="Editar" type="Default" icon="sap-icon://edit" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onButtonEditarPress"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <form:Form width="67%" editable="true" visible="true">
+                    <form:title/>
+                    <form:layout>
+                        <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                    </form:layout>
+                </form:Form>
+            </content>
+            <footer>
+                <OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">
+                    <content>
+                        <ToolbarSpacer width=""/>
+                        <Button text="Save" type="Emphasized" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onPressSave" />
+                        <Button text="Cancel" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+                    </content>
+                </OverflowToolbar>
+            </footer>
+            <headerContent/>
+            <subHeader/>
+            <customHeader/>
+            <!--DynamicPage Footer -->
+            </Page>
+            </pages>
+        </App>
+</mvc:View>

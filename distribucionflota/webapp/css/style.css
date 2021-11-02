@@ -1,0 +1,24 @@
+/* Enter your custom styles here */
+.SinColor{
+  background:  #CDE3F2!important;
+}
+.BADVALUE_MEDIUM{
+  background:  #F5656D!important;
+}
+.CRITICALVALUE_LIGHT{
+  background:  #FFD28F!important;
+}
+.KEY_MEDIUM{
+  background:  #A5E1F1!important;
+}
+.POSITIVE{
+  background:  #89E988!important;
+}
+
+.sapMTextEMB {
+    font-size: 50px!important;
+}
+
+.sapUiNoMargin.sapUiNoMargin .sapUiTableCellInner {
+    padding: 0;
+}

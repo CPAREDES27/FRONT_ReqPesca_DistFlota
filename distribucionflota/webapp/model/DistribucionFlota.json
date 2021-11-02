@@ -1,0 +1,146 @@
+{
+  "Zonas": [{
+      "ZonaName": "Callao",
+      "Plantas": [
+		  {
+			"PlantaName": "Callao Norte",
+			"Embarcaciones": [
+				{
+					"FlagEmba":"1",
+                    "DescEmba": "TASA 413",
+                    "CbodEmba": "456",
+                    "PescDecl": "0",
+                    "Estado": "PESC",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":1,
+                    "DescZonaCala":"ISLAS LOBOS DE TIERRA, REVEN TAZON",
+                    "EstSisFrio":"RC",
+                    "Semaforo":"sap-icon://status-completed",
+                    "SemaforoColor":""
+				},
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 417",
+                    "CbodEmba": "452",
+                    "PescDecl": "0",
+                    "Estado": "SREG",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":24,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"GF",
+                    "Semaforo":"sap-icon://status-completed"
+				},
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 418",
+                    "CbodEmba": "437",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":0,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"RC",
+                    "Semaforo":"sap-icon://status-completed"
+                }		
+			]
+		  },
+		  {
+			"PlantaName": "Callao Sur",
+			"Embarcaciones": [
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 417",
+                    "CbodEmba": "452",
+                    "PescDecl": "0",
+                    "Estado": "SREG",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":24,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"GF",
+                    "Semaforo":"sap-icon://status-completed"
+				},
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 418",
+                    "CbodEmba": "437",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":0,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"RC",
+                    "Semaforo":"sap-icon://status-completed"
+				},
+				{
+					"FlagEmba":"1",
+                    "DescEmba": "TASA 41",
+                    "CbodEmba": "493",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":14,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"GF",
+                    "Semaforo":"sap-icon://status-completed"
+				}			
+			]
+		  }	  
+	  ]
+    },
+	{
+      "ZonaName": "Chimbote",
+      "Plantas": [
+		  {
+			"PlantaName": "Chimbote",
+			"Embarcaciones": [
+				{
+					"FlagEmba":"1",
+                    "DescEmba": "TASA 412",
+                    "CbodEmba": "411",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":19,
+                    "DescZonaCala":"ISLAS LOBOS DE TIERRA, REVEN TAZON",
+                    "EstSisFrio":"RC",
+                    "Semaforo":"sap-icon://status-completed"
+				},
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 414",
+                    "CbodEmba": "432",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":1,
+                    "DescZonaCala":"ISLAS LOBOS DE TIERRA, REVEN TAZON",
+                    "EstSisFrio":"RC",
+                    "Semaforo":"sap-icon://status-completed"
+				},
+				{
+					"FlagEmba":"0",
+                    "DescEmba": "TASA 419",
+                    "CbodEmba": "408",
+                    "PescDecl": "0",
+                    "Estado": "PUER",
+                    "HoraArribo": "00:00",
+                    "DiaAnt":"sap-icon://status-completed",
+                    "Tdc":0,
+                    "DescZonaCala":"REVEN TAZON",
+                    "EstSisFrio":"IN",
+                    "Semaforo":"sap-icon://status-completed"
+				}			
+			]
+		  }
+	  ]
+    }
+  ]	
+}

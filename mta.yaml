@@ -1,0 +1,120 @@
+_schema-version: "3.2"
+ID: DistribucionFlotaQAS
+version: 0.0.1
+modules:
+- name: DistribucionFlotaQAS-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: DistribucionFlotaQAS-destination-service
+    parameters:
+      content-target: true
+  - name: DistribucionFlotaQAS_html_repo_host
+    parameters:
+      service-key:
+        name: DistribucionFlotaQAS_html_repo_host-key
+  - name: uaa_DistribucionFlotaQAS
+    parameters:
+      service-key:
+        name: uaa_DistribucionFlotaQAS-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: DistribucionFlotaQAS_DistribucionFlotaQAS_html_repo_host
+          ServiceInstanceName: DistribucionFlotaQAS-html5-app-host-service
+          ServiceKeyName: DistribucionFlotaQAS_html_repo_host-key
+          sap.cloud.service: DistribucionFlotaQAS
+        - Authentication: OAuth2UserTokenExchange
+          Name: DistribucionFlotaQAS_uaa_DistribucionFlotaQAS
+          ServiceInstanceName: DistribucionFlotaQAS-xsuaa-service
+          ServiceKeyName: uaa_DistribucionFlotaQAS-key
+          sap.cloud.service: DistribucionFlotaQAS
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: DistribucionFlotaQAS-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: DistribucionFlotaQAS_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - tasacomrequerimientopesca.zip
+      name: tasacomrequerimientopesca
+      target-path: resources/
+    - artifacts:
+      - tasacomrequerimientopescaxplanta.zip
+      name: tasacomrequerimientopescaxplanta
+      target-path: resources/
+    - artifacts:
+      - tasacomdistribucionflota.zip
+      name: tasacomdistribucionflota
+      target-path: resources/
+- name: tasacomrequerimientopesca
+  type: html5
+  path: requerimientopesca
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: tasacomrequerimientopescaxplanta
+  type: html5
+  path: requerimientopescaxplanta
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: tasacomdistribucionflota
+  type: html5
+  path: distribucionflota
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: DistribucionFlotaQAS-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: DistribucionFlotaQAS-destination-service
+    service-plan: lite
+- name: DistribucionFlotaQAS_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: DistribucionFlotaQAS-html5-app-host-service
+    service-plan: app-host
+- name: uaa_DistribucionFlotaQAS
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: DistribucionFlotaQAS-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

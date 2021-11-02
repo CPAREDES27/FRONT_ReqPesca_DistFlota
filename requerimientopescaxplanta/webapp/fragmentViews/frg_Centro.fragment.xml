@@ -1,0 +1,142 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f" xmlns:variants="sap.ui.comp.variants" xmlns="sap.m"
+	xmlns:ui="sap.ui.table" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" xmlns:commons="sap.suite.ui.commons">
+	<Dialog id="dialogLiquidacionProvisional" horizontalScrolling="true" showHeader="true" state="None" stretch="false"
+		title="Liquidación provisional" type="Standard" verticalScrolling="true">
+		<content>
+			<l:VerticalLayout id="containerLayout2" width="100%">
+				<l:BlockLayout id="BlockLayout2" background="{/selectedBackground}">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell>
+							<VBox alignItems="Inherit" direction="Column" fitContainer="true" width="30%" height="auto" justifyContent="Start" renderType="Div"
+								visible="true" displayInline="false">
+								<items>
+									<form:Form width="656.609375px" editable="true" visible="true">
+										<form:formContainers>
+											<form:FormContainer visible="true">
+												<form:formElements>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>oDFechaPreIni}" design="Standard" width="100%" required="false" textAlign="End" textDirection="Inherit" visible="true"/>
+														</form:label>
+														<form:fields>
+															<DatePicker id="dt_FechaPreIni_lp" width="30%" textAlign="Begin" valueFormat="yyyy/MM/dd" displayFormat="dd/MM/yyyy"
+																placeholder="dd/mm/aaaa" class="ejemplo" value="{ parts: [ {path: 'modelOperacion>/Fprini'}], formatter : '.formatter.formatoFechaJson'}"
+																editable="true"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>oDFechaPreFin}" design="Standard" width="100%" required="false" textAlign="End" textDirection="Inherit" visible="true"/>
+														</form:label>
+														<form:fields>
+															<DatePicker id="dt_FechaPreFin_lp" width="30%" textAlign="Begin" valueFormat="yyyy/MM/dd" displayFormat="dd/MM/yyyy"
+																placeholder="dd/mm/aaaa" class="ejemplo" value="{ parts: [ {path: 'modelOperacion>/Fprfin'}], formatter : '.formatter.formatoFechaJson'}"
+																editable="true"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+												<form:title/>
+											</form:FormContainer>
+										</form:formContainers>
+										<form:layout>
+											<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+										</form:layout>
+									</form:Form>
+								</items>
+								<layoutData/>
+							</VBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell>
+							<VBox alignItems="Inherit" direction="Column" fitContainer="true" width="30%" height="auto" justifyContent="Start" renderType="Div"
+								visible="true" displayInline="false">
+								<items>
+									<form:Form width="656.609375px" editable="true" visible="true">
+										<form:formContainers>
+											<form:FormContainer visible="true">
+												<form:formElements>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>oDTipoPrecioOro}" design="Standard" width="100%" required="false" textAlign="End" textDirection="Inherit"/>
+														</form:label>
+														<form:fields>
+															<ComboBox selectedKey="{modelOperacion>/Tippre}" width="30%" id="cbo_Tippre_lp" editable="true" placeholder="{i18n>oDTipoPrecioOro}"
+																valueState="None" maxWidth="100%" items="{path:'/results', sorter: { path: 'DTPPRE' }, templateShareable:true}">
+																<items>
+																	<core:Item text="{TIPPRE} - {DTPPRE}" key="{TIPPRE}"/>
+																</items>
+															</ComboBox>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="Desc. entrega" design="Standard" width="100%" required="false" textAlign="End" textDirection="Inherit"/>
+														</form:label>
+														<form:fields>
+															<Input value="{modelOperacion>/VbelnVa}" id="txt_VbelnVa_lp" width="30%" type="Text" placeholder="{i18n>oDContrato}" editable="true"
+																required="true" maxLength="28"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+												<form:title/>
+											</form:FormContainer>
+										</form:formContainers>
+										<form:layout>
+											<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+										</form:layout>
+									</form:Form>
+								</items>
+								<layoutData/>
+							</VBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell>
+							<VBox alignItems="Inherit" direction="Column" fitContainer="true" width="30%" height="auto" justifyContent="Start" renderType="Div"
+								visible="true" displayInline="false">
+								<items>
+									<form:Form width="656.609375px" editable="true" visible="true">
+										<form:formContainers>
+											<form:FormContainer visible="true">
+												<form:formElements>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="Fecha entrega" design="Standard" width="100%" required="false" textAlign="End" textDirection="Inherit" visible="true"/>
+														</form:label>
+														<form:fields>
+															<DatePicker id="dt_FechaEntrega_lp" width="30%" textAlign="Begin" valueFormat="yyyy/MM/dd" displayFormat="dd/MM/yyyy"
+																placeholder="dd/mm/aaaa" class="ejemplo" value="{ parts: [ {path: 'modelOperacion>/Fprfin'}], formatter : '.formatter.formatoFechaJson'}"
+																editable="true"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+												<form:title/>
+											</form:FormContainer>
+										</form:formContainers>
+										<form:layout>
+											<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+										</form:layout>
+									</form:Form>
+								</items>
+								<layoutData/>
+							</VBox>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+			<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
+					<PDFViewer source="{/Source}" title="{/Title}" height="{/Height}">
+						<layoutData>
+							<FlexItemData growFactor="1"/>
+						</layoutData>
+					</PDFViewer>
+			</FlexBox>
+		</content>
+		<beginButton/>
+		<buttons>
+			<Button text="Download" press="AddRepresentative" type="Accept"/>
+			<Button text="Cerrar" press="onCloseDialog" type="Reject"/>
+		</buttons>
+		<customHeader/>
+		<endButton/>
+		<subHeader/>
+	</Dialog>
+</core:FragmentDefinition>

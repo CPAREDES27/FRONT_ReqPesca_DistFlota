@@ -1,0 +1,4 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" 
+          xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core">
+		<App id="app"></App>
+</mvc:View>

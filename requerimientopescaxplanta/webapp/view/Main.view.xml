@@ -1,0 +1,126 @@
+<mvc:View
+    controllerName="tasa.com.requerimientopescaxplanta.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
+	xmlns:t="sap.ui.table" xmlns:dnd="sap.ui.core.dnd" height="100%" xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:ui="sap.ui.table" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:variants="sap.ui.comp.variants">
+        <App>
+         <pages>
+            <Page showHeader="true" title="Requerimiento Pesca" showFooter="false" showNavButton="false">
+            <content>
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:title>
+                        <core:Title text="Selección de Datos" level="Auto"/>
+                    </form:title>
+                    <form:formContainers>
+                        <form:FormContainer visible="true">
+                            <form:formElements>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Fecha Inicio" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <DatePicker width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHITM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Fecha Fin" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <DatePicker width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHFTM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="Temporada" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Input type="Text" showValueHelp="true" value="{modelReqPescaxPlanta>/SearchTemporada/CDPCN}" enabled="true" visible="true" width="50%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogTemporada"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Button text="Buscar" type="Default" icon="sap-icon://search" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onSearchReqButton"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Button text="Limpiar" type="Default" icon="sap-icon://eraser" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onButtonPressLimpiar"/>
+                                    </form:fields>
+                                </form:FormElement>                                
+                            </form:formElements>
+                            <form:title/>
+                        </form:FormContainer>
+                    </form:formContainers>
+                    <form:layout>
+                        <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                    </form:layout>
+                </form:Form>
+                <Table id="tbl_reqpescaxplanta" width="45%" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiResponsiveMargin" 
+                    items="{path:'modelReqPescaxPlanta>/ListReqPlanta', templateShareable:true}">
+                    <infoToolbar>
+                        <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                            <content>
+                                <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </content>
+                        </Toolbar>
+                    </infoToolbar>
+                    <headerToolbar>
+                        <OverflowToolbar width="auto" height="auto" design="Transparent" visible="true" enabled="true">
+                            <content>
+                                <Title text="Lista de Registro" titleStyle="Auto" width="auto" textAlign="Begin" visible="true" wrapping="false"/>
+                                <ToolbarSpacer width=""/>                              
+                                <Button text="Cargar Req" type="Default" icon="sap-icon://save" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onCargaReqButton"/>
+                                <Button press="onExportar" visible="false" icon="sap-icon://excel-attachment" type="Emphasized"/>
+                                <SearchField placeholder="Busqueda rápida" showSearchButton="true" visible="false" width="auto" search="handleLiveChange"/>  
+                                <OverflowToolbarButton text="Settings" type="Transparent" icon="sap-icon://sort" iconFirst="true" width="auto" enabled="true" visible="false" iconDensityAware="false" press="_onOverflowToolbarButtonPress"/>
+                                <OverflowToolbarButton text="Group" type="Transparent" icon="sap-icon://group-2" iconFirst="true" width="auto" enabled="true" visible="false" iconDensityAware="false"/>
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Planta" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </header>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="Requerimiento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </header>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active">
+                            <cells>
+                                <Text text="{modelReqPescaxPlanta>zdszar}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                <Input type="Text" showValueHelp="false" value="{modelReqPescaxPlanta>cnprq}" enabled="true" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                <Text text="{ parts: [ {path: 'modelReqPescaxPlanta>fhreq'}], formatter : '.formatter.formatoFechaSAP'}" visible="false" ></Text>
+                                <Text text="{ parts: [ {path: 'modelReqPescaxPlanta>hrreq'}], formatter : '.formatter.formatoHoraSAP'}" visible="false" ></Text>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </content>
+            <footer>
+                <OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">
+                    <content>
+                        <ToolbarSpacer width=""/>
+                        <Button text="Save" type="Emphasized" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onPressSave" />
+                        <Button text="Cancel" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+                    </content>
+                </OverflowToolbar>
+            </footer>
+            <headerContent/>
+            <subHeader/>
+            <customHeader/>
+            </Page>
+            </pages>
+        </App>
+</mvc:View>
