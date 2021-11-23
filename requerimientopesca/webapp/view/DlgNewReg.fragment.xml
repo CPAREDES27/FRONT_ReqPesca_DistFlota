@@ -63,11 +63,86 @@
                             </form:FormElement>
                             <form:FormElement visible="true">
                                 <form:label>
-                                    <Label text="Planta" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Label text="Centro" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/CDPTA}" enabled="true" visible="true" width="50%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/>
-                                    <!--<Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/WERKS}" editable="false" enabled="true" visible="true" width="80%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/>-->
+                                    <!--Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/CDPTA}" enabled="true" visible="true" width="50%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/> -->
+                                    <Input type="Text" showValueHelp="true" value="{modelReqPesca>/NewReg/WERKS}" editable="true" enabled="true" visible="true" width="50%" valueHelpOnly="true" required="false" valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onOpenDialogCentroNewReq"/> 
+                                    <!--
+                                    <Input
+                                            id="NewcentroInput"
+                                            value="{modelReqPesca>/NewReg/WERKS}"
+                                            textFormatMode="ValueKey"
+                                            showSuggestion="true"
+                                            width="50%"
+                                            showTableSuggestionValueHelp="false"
+                                            suggestionRows="{path:'modelReqPesca>/ListCentroReqPesca', sorter : {path : 'DESCR', descending : false}, templateShareable:true}"
+                                            suggestionItemSelected=".onSuggestionCentroItemSelected">
+                                            <suggestionColumns>
+                                                <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="Cod. Planta" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="Centro" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="13%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                        <header>
+                                                        <Text text="Descripción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </header>
+                                                    <footer/>
+                                                </Column>
+                                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="R.U.C. Empresa" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="23%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="Desc. Empresa" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="Ind. Propiedad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                    <header>
+                                                        <Text text="Puerto" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>
+                                                <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                                <header>
+                                                        <Text text="Desc. Puerto" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    </header>
+                                                    <footer/>
+                                                </Column>                                                                                                 
+                                            </suggestionColumns>
+
+                                            <suggestionRows>
+                                                <ColumnListItem>
+                                                    <Text text="{modelReqPesca>CDPTA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>WERKS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>DESCR}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>STCD1}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>NAME1}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>DESC_INPRP}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>CDPTO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Text text="{modelReqPesca>DSPTO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>                                                    
+                                                </ColumnListItem>
+                                            </suggestionRows>
+                                    </Input>
+                                    -->
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -75,7 +150,7 @@
                                     <Label text="Cant. requerida" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input type="Text" showValueHelp="false" value="{modelReqPesca>/NewReg/CNPRQ}" enabled="true" visible="true" width="91.5%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <Input type="Number" showValueHelp="false" value="{modelReqPesca>/NewReg/CNPRQ}" enabled="true" visible="true" width="91.5%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                                     <Label text="{modelReqPesca>/NewReg/CNPRQ}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
                                 </form:fields>
                             </form:FormElement>

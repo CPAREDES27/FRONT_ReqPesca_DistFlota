@@ -10,11 +10,13 @@ sap.ui.define([
     "sap/ui/core/library",
     "sap/m/Token",
     "tasa/com/requerimientopesca/util/formatter",
+    "sap/ui/core/Item"
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (Controller, MessageBox, MessageToast, Filter, FilterOperator, JSONModel, exportLibrary, Spreadsheet, CoreLibrary, Token, formatter) {
+	function (Controller, MessageBox, MessageToast, Filter, FilterOperator,
+    JSONModel, exportLibrary, Spreadsheet, CoreLibrary, Token, formatter, Item) {
         "use strict";
         const HOST = "https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
         var EdmType = exportLibrary.EdmType;
@@ -44,6 +46,7 @@ sap.ui.define([
             this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta", {});
             this.getView().getModel("modelReqPesca").setProperty("/NewReg", {});
             this.getView().getModel("modelReqPesca").setProperty("/ListUnidadMedida", {});
+            this.getView().getModel("modelReqPesca").setProperty("/Search/Numfilas", 200);
             this.searchUnidadMedida();
 
 			var oViewModel,
@@ -61,7 +64,31 @@ sap.ui.define([
 					}
 				}
             });
+
+            this.searchCentroReqPesca();
+
+			var oInput = this.byId("centroInput");
+			oInput.setSuggestionRowValidator(this.suggestionRowValidator);
 /*
+
+            var that = this;
+
+            if (!this._oResponsivePopover) {
+                this._oResponsivePopover = sap.ui.xmlfragment("tasa.com.requerimientopesca.view.DlgHeaderTable", this);
+                this._oResponsivePopover.setModel(this.getView().getModel());
+            }
+
+            var oTable = this.getView().byId("tbl_reqpesca");
+            oTable.addEventDelegate({
+                onAfterRendering: function() {
+                    var oHeader = this.$().find('.sapMListTblHeaderCell'); //Get hold of table header elements
+                    for (var i = 0; i < oHeader.length; i++) {
+                    var oID = oHeader[i].id;
+                    that.onClick(oID);
+                    }
+                }
+            }, oTable);
+
             var oView = this.getView();
             var oMultiInput1 = oView.byId("multiInput1");
             	oMultiInput1.setTokens([
@@ -78,6 +105,7 @@ sap.ui.define([
             //this.getLogonUser();
             console.log('inicio');
             
+            /*
             var dateFrom = new Date();
 			var	dateTo = new Date();
             var oModel = new JSONModel();
@@ -98,7 +126,48 @@ sap.ui.define([
 			});
             this.getView().setModel(oModel); 
             this._iEvent = 0;
+            */
         },
+
+		suggestionRowValidator: function (oColumnListItem) {
+			var aCells = oColumnListItem.getCells();
+
+			return new Item({
+				key: aCells[1].getText(),
+				text: aCells[2].getText()
+			});
+        },
+        
+        /*suggestionRowValidatorNew: function (oColumnListItem) {
+			var aCells = oColumnListItem.getCells();
+
+			return new Item({
+				key: aCells[2].getText(),
+				text: aCells[1].getText()
+			});
+        },*/
+
+        /*
+		onSuggestionCentroItemSelected: function () {
+			var sKey = this.byId("centroInput").getSelectedKey();
+			this.byId('selectedKeyCentro').setText(sKey);
+		}, */        
+
+        onClick: function(oID) {
+            var that = this;
+            $('#' + oID).click(function(oEvent) { //Attach Table Header Element Event
+            var oTarget = oEvent.currentTarget; //Get hold of Header Element
+            var oLabelText = oTarget.childNodes[0].textContent; //Get Column Header text
+            var oIndex = oTarget.id.slice(-1); //Get the column Index
+            var oView = that.getView();
+            //var oTable = oView.byId("tbl_reqpesca");
+            //var oModel = oTable.getModel().getProperty("/ListReqPesca"); //Get Hold of Table Model Values
+            var oModel = that.getView().getModel("modelReqPesca").getProperty("/ListReqPesca"); //Get Hold of Table Model Values
+            var oKeys = Object.keys(oModel[0]); //Get Hold of Model Keys to filter the value
+            //oView.getModel().setProperty("/bindingValue", oKeys[oIndex]); //Save the key value to property
+            that._oResponsivePopover.openBy(oTarget);
+            });
+        },        
 
         _getListaMaestros:function(oViewModel){
             let oModel = this.getModel(),
@@ -216,27 +285,41 @@ sap.ui.define([
 
             var self = this;
             var oView = this.getView();
+            var dayIni;
+            var dayFin;
             var nrreq = self.getView().getModel("modelReqPesca").getProperty("/Search").NRREQ;
             var fhreq1 = self.getView().getModel("modelReqPesca").getProperty("/Search").FHREQ1;
+            if (fhreq1) {
+                if (fhreq1.getDate() < 10) dayIni = "0" + fhreq1.getDate().toString();
+                if (fhreq1.getDate() > 10) dayIni = fhreq1.getDate().toString();
+                fhreq1 = fhreq1.getFullYear().toString() + ( fhreq1.getMonth() + 1 ).toString() + dayIni;
+            }
+            
             var fhreq2 = self.getView().getModel("modelReqPesca").getProperty("/Search").FHREQ2;
-            var werks = self.getView().getModel("modelReqPesca").getProperty("/Search").WERKS;
+            if (fhreq2) {
+                if (fhreq2.getDate() < 10) dayFin = "0" + fhreq2.getDate().toString();
+                if (fhreq2.getDate() > 10) dayFin = fhreq2.getDate().toString();
+                fhreq2 = fhreq2.getFullYear().toString() + ( fhreq2.getMonth() + 1 ).toString() + dayFin;
+            }
+
+            //var werks = self.getView().getModel("modelReqPesca").getProperty("/Search").WERKS;
+            var werks = this.getView().byId("centroInput").getSelectedKey();
             var numfilas = self.getView().getModel("modelReqPesca").getProperty("/Search").Numfilas;
             var nrreq1 = self.getView().getModel("modelReqPesca").getProperty("/Search").NRREQ1;
             var nrreq2 = self.getView().getModel("modelReqPesca").getProperty("/Search").NRREQ2;
 
-            if (!numfilas) numfilas = 50;
+            if (!numfilas) numfilas = 200;
                         
-            var table = "ZV_FLRP";
-            var user = "FGARCIA";
+            var table = "ZV_FLRP";  
+            var user = this.getUsuarioLogueado();
             var model = "modelReqPesca";
             var property = "/ListReqPesca";
-            var meinsAux = self.getView().getModel(model).getProperty("/ListUnidadMedida")[0].MEINS;
+            var meinsAux = this.getMeins();
 
             var options = [];
             if (nrreq1 || nrreq2) options.push({ cantidad: "40", control: "MULTIINPUT", "key": "NRREQ", valueHigh: nrreq2 ? nrreq2 : "", valueLow: nrreq1 }); 
 			if (werks) options.push({ cantidad: "40", control: "INPUT", "key": "WERKS", valueHigh: "", valueLow: werks.toUpperCase() }); 
             if (fhreq2 && fhreq1) options.push({ cantidad: "40", control: "MULTIINPUT", "key": "FHREQ", valueHigh: fhreq2, valueLow: fhreq1 }); 
-            
             
             self.ejecutarReadTable(table, options, user, numfilas, model, property, function(callBack){
                 callBack.forEach( function(item){
@@ -248,16 +331,24 @@ sap.ui.define([
 
         },
 
+        getMeins: function () {
+
+            var meins = "";
+            var listaMeins = this.getView().getModel("modelReqPesca").getProperty("/ListUnidadMedida");
+            meins = listaMeins.length > 0 ? listaMeins[0].MEINS : "";
+            return meins;
+        },
+
         searchUnidadMedida: function () {
 
             var self = this;
             var oView = this.getView();
                         
             var table = "ZFLCDL";
-            var user = "FGARCIA";
+            var user = this.getUsuarioLogueado();
             var model = "modelReqPesca";
             var numfilas = 50;
-
+            // 009
             var options = [];
             
             self.ejecutarReadTable(table, options, user, numfilas, model, "", function(callBack){
@@ -286,7 +377,7 @@ sap.ui.define([
             if (!numfilas) numfilas = 50;  
 
             var table = "ZV_FLPL";
-            var user = "FGARCIA";
+            var user = this.getUsuarioLogueado();
             var model = "modelReqPesca";
             var property = "/ListCentroReqPesca";
             var options = [];
@@ -304,6 +395,96 @@ sap.ui.define([
             
         },
 
+        /*
+        createColumnConfig: function () {
+				var aCols = [];
+				const title = [];
+				const table = this.byId('tableData');
+				let tableColumns = table.getColumns();
+				const dataTable = table.getBinding('rows').oList;
+
+				
+				//Obtener solo las opciones que se exportarán
+				
+				for (let i = 0; i < tableColumns.length; i++) {
+					let header = tableColumns[i].getAggregation('template');
+					if (header) {
+						let headerColId = header.getId();
+						let headerCol = sap.ui.getCore().byId(headerColId);
+						let headerColValue = headerCol.getText();
+
+						title.push(headerColValue);
+					}
+
+                }
+            
+				title.splice(title.length - 2, 1);
+				title.pop();
+
+				
+				//Combinar los títulos y los campos de la cabecera
+				 
+				const properties = title.map((t, i) => {
+					return {
+						column: t,
+						key: this.dataTableKeys[i]
+					}
+				});
+
+				properties.forEach(p => {
+					const typeValue = typeof dataTable[0][p.key];
+					let propCol = {
+						label: p.column,
+						property: p.key
+					};
+
+					switch (typeValue) {
+						case 'number':
+							propCol.type = EdmType.Number;
+							propCol.scale = 0;
+							break;
+						case 'string':
+							propCol.type = EdmType.String;
+							propCol.wrap = true;
+							break;
+					}
+
+					aCols.push(propCol);
+				});
+
+				return aCols;
+			},
+
+            exportarExcel: function (event) {
+				var aCols, oRowBinding, oSettings, oSheet, oTable;
+
+				if (!this._oTable) {
+					this._oTable = this.byId('tableData');
+				}
+
+				oTable = this._oTable;
+				oRowBinding = oTable.getBinding('rows');
+				aCols = this.createColumnConfig();
+
+				oSettings = {
+					workbook: { 
+						columns: aCols,
+						context: {
+							sheetName: "CONSULTA DE DESCARGAS"
+						} 
+					},
+					dataSource: oRowBinding,
+					fileName: 'Consulta de pesca descargada.xlsx',
+					worker: false // We need to disable worker because we are using a Mockserver as OData Service
+				};
+
+				oSheet = new Spreadsheet(oSettings);
+				oSheet.build().finally(function () {
+					oSheet.destroy();
+				});
+			}, 
+        */
+
         onExportar:function(oEvent){
 
             var aCols, oRowBinding, oSettings, oSheet, oTable;
@@ -313,14 +494,14 @@ sap.ui.define([
             }
 
             oTable = this._oTable;
-            oRowBinding = oTable.getBinding('items');
+            oRowBinding = oTable.getBinding('rows');
             aCols = this.createColumnConfig();
 
             oSettings = {
                 workbook: { columns: aCols },
                 dataSource: oRowBinding,
                 fileName: 'RequerimientoPesca.xlsx',
-                worker: false // We need to disable worker because we are using a Mockserver as OData Service
+                worker: false 
             };
 
             oSheet = new Spreadsheet(oSettings);
@@ -335,10 +516,10 @@ sap.ui.define([
 			const title = [];
 			const table = this.byId('tbl_reqpesca');
 			let tableColumns = table.getColumns();
-			const dataTable = table.getBinding('items').oList;
+			const dataTable = table.getBinding('rows').oList;
 				/**
 			 * Obtener solo las opciones que se exportarán
-			 */
+			
 			for (let i = 0; i < tableColumns.length; i++) {
 				let header = tableColumns[i].getAggregation('header');
 				if (header) {
@@ -347,7 +528,19 @@ sap.ui.define([
 					let headerColValue = headerCol.getText();
 						title.push(headerColValue);
 				}
-			}
+            }
+*/
+            for (let i = 0; i < tableColumns.length; i++) {
+				let header = tableColumns[i].getAggregation('template');
+				if (header) {
+					let headerColId = header.getId();
+					let headerCol = sap.ui.getCore().byId(headerColId);
+					let headerColValue = headerCol.getText();
+						title.push(headerColValue);
+				}
+            }
+
+                //title.splice(title.length - 2, 1);
 				title.pop();
 				/**
 			 * Combinar los títulos y los campos de la cabecera
@@ -377,8 +570,8 @@ sap.ui.define([
 					aCols.push(propCol);
 			});
 				return aCols;
-		},        
-        createColumnsExport:function(aFields){
+		},     
+        /*createColumnsExport:function(aFields){
             let aColumnsExport = aFields.map(oCol=>{
                 return {
                     label:oCol.NAMEFIELD,
@@ -386,12 +579,12 @@ sap.ui.define([
                 }
             });
             return aColumnsExport;
-        },        
+        },*/        
 
         _onpress_centrolinkreqpesca: function (oEvent) {
             var self = this;
             let mod = oEvent.getSource().getBindingContext("modelReqPesca");
-            let data  =mod.getObject();
+            let data = mod.getObject();
             var viewCall = self.getView().getModel("modelReqPesca").getProperty("/ViewCall");
             var cdpta = data.CDPTA;
             var werks = data.WERKS;
@@ -399,6 +592,7 @@ sap.ui.define([
 
             if (viewCall === "NewReq") {
                 self.getView().getModel("modelReqPesca").setProperty("/NewReg/CDPTA",cdpta);
+                self.getView().getModel("modelReqPesca").setProperty("/NewReg/WERKS",werks);
             } else {
                 self.getView().getModel("modelReqPesca").setProperty("/Search/WERKS",werks);
                 self.getView().getModel("modelReqPesca").setProperty("/Search/DESCR",descr);
@@ -408,19 +602,115 @@ sap.ui.define([
 
         },
 
-        handleLiveChange : function(oEvent){
-			var aFilter = [];
-			var sQuery = oEvent.getParameter("query");
+        handleLiveChangesw : function(oEvent){
+            var aFilter = [];
+            var filter;
+            //var sQuery = oEvent.getParameter("query");
+            var sQuery = oEvent.getParameters().newValue;
+
+            
 
 			if (sQuery) {
-				aFilter.push(new Filter("NRREQ", FilterOperator.Contains, sQuery));
-			}
+                aFilter.push(new Filter("NRREQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHREQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("WERKS", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("DESCR", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("MEINS", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("CNPRQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("DESC_ESREG", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("HRCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("ATCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("HRMOD", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHMOD", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("ATMOD", FilterOperator.Contains, sQuery));
+            }
+            
+            filter = new Filter({
+                filters: [
+                    aFilter
+                ],
+                and: false,
+            });
 
 			    // filter binding
 			var oList = this.getView().byId("tbl_reqpesca");
 			var oBinding = oList.getBinding("items");
-			oBinding.filter(aFilter);
+			oBinding.filter(filter);
 
+        },
+
+        handleLiveChange: function (oEvent) {
+
+                let sQuery = oEvent.getSource().getValue();
+                var table = this.byId("tbl_reqpesca");
+			    var tableItemsBinding = table.getBinding('rows');
+                //var oBinding = oList.getBinding("items");
+				var dataTable = tableItemsBinding.oList;
+				let filters = [];
+
+				this.dataTableKeys.forEach(k => {
+					var typeValue = typeof dataTable[0][k];
+					let vOperator = null;
+
+					switch (typeValue) {
+						case 'string':
+							vOperator = FilterOperator.Contains;
+							break;
+						case 'number':
+							vOperator = FilterOperator.EQ;
+							break;
+					}
+
+					var filter = new Filter(k, vOperator, sQuery);
+					filters.push(filter);
+				});
+				var oFilters = new Filter({
+					filters: filters
+				});
+				tableItemsBinding.filter(oFilters, "Application");
+			},
+
+        handleLiveChanges: function(oEvent) {
+            
+            var aFilter = [];
+            var sQuery = oEvent.getParameters().newValue;
+
+            if (sQuery) {
+                aFilter.push(new Filter("NRREQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHREQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("WERKS", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("DESCR", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("MEINS", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("CNPRQ", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("DESC_ESREG", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("HRCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("ATCRN", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("HRMOD", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("FHMOD", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("ATMOD", FilterOperator.Contains, sQuery));
+            }
+
+            
+
+            var filter = new Filter({
+                filters: [
+                    aFilter
+                ],
+                and: false,
+            });
+
+            var oList = this.getView().byId("tbl_reqpesca");
+			var oBinding = oList.getBinding("items");
+
+            oBinding.filter([
+
+                filter 
+
+            ]);
+            
+            
         },
 
         _onBuscarButtonPress: function () {
@@ -437,6 +727,7 @@ sap.ui.define([
             this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/NAME1", "");
             this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/DSPTO", "");
             this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/Numfilas", "5");
+            this.getView().getModel("modelReqPesca").setProperty("/ListCentroReqPesca", []);
             this.OpenDialogCentro("SearchReq");
         },
 
@@ -446,6 +737,16 @@ sap.ui.define([
         },
 
          _onOpenDialogCentroNewReq: function () {
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/WERKS", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/CDPTA", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/STCD1", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/CDPTO", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/INPRP", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/DESCR", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/NAME1", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/DSPTO", "");
+            this.getView().getModel("modelReqPesca").setProperty("/SearchPlanta/Numfilas", "5");
+            this.getView().getModel("modelReqPesca").setProperty("/ListCentroReqPesca", []);
             this.OpenDialogCentro("NewReq");
         },
 
@@ -474,46 +775,19 @@ sap.ui.define([
         registrarReqPesca: function () {
 
             var date = new Date();
-            var today = date.getDate() + '/' + ( date.getMonth() + 1 ) + '/' + date.getFullYear();
+            var day;
+            if (date.getDate() < 10) day = "0" + date.getDate().toString();
+            if (date.getDate() >= 10) day = date.getDate().toString();
+            var month;
+            if (date.getMonth() < 10) month = "0" + ( date.getMonth() + 1 ).toString();
+            if (date.getMonth() >= 10) month = ( date.getMonth() + 1 ).toString();
+            var today = date.getFullYear().toString() + month + day;
 
-            var dd = today.substring(0, 2);
-            var MM = today.substring(3, 5);
-            var yyyy = today.substring(6, 10);
-            today = yyyy + MM + dd;
-
-            var hours = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-
-            hours = hours.split(":");
-
-            var hr = hours[0];
-            hr = hr.toString()
-            if (hr.length === 1) hr = "0" + hr
-            var min = hours[1];
-            min = min.toString()
-            if (min.length === 1) min = "0" + min
-            var seg = hours[2];
-            seg = seg.toString()
-            if (seg.length === 1) seg = "0" + seg
-            hours = hr + min + seg;
-
-            /*
-            if (hours.substring().length >= 7){
-                var hr = hours.substring(0, 1);
-                var min = hours.substring(2, 4);
-                var seg = hours.substring(5, 7);
-                hours = "0" + hr + min + seg;
-            };
-
-            if (hours.substring().length === 8){
-                var hr = hours.substring(0, 2);
-                var min = hours.substring(3, 5);
-                var seg = hours.substring(6, 8);
-                hours = hr + min + seg;
-            };
-            */
+            var hours = date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
             var urlNodeJS = "https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
             var self = this;
+            var validar = true;
             var nrreq = self.getView().getModel("modelReqPesca").getProperty("/NewReg").NRREQ;
             var cdpta = self.getView().getModel("modelReqPesca").getProperty("/NewReg").CDPTA;
             var fhreq = self.getView().getModel("modelReqPesca").getProperty("/NewReg").FHREQ;
@@ -524,55 +798,73 @@ sap.ui.define([
             fhreq = YYYY + mm + DD;
 
             var cnprq = self.getView().getModel("modelReqPesca").getProperty("/NewReg").CNPRQ;
-            //var cnpcm = self.getView().getModel("modelReqPesca").getProperty("/NewReg").CNPCM;
+            if (parseInt(cnprq) < 1000000000) cnprq;
+            if (parseInt(cnprq) > 1000000000) {
+                MessageBox.warning("Colocar un Numero de filas menor al propuesto");
+                validar = false;
+            }
             var esreg = self.getView().getModel("modelReqPesca").getProperty("/NewReg").ESREG;
             var atmod = "", atcrn = "", hrmod = "", hrcrn = "",  fhmod = "", fhcrn = "";                     
             var p_case = this.getView().getModel('modelReqPesca').getProperty("/p_case");
-            if (p_case === "E") {
-                fhmod = today;
-                hrmod = hours;
-                atmod = self.getView().getModel("modelReqPesca").getProperty("/NewReg").ATMOD;
-            } else {
-                fhcrn = today;
-                atcrn = self.getView().getModel("modelReqPesca").getProperty("/NewReg").ATCRN;
-                hrcrn = hours;
+            if (validar) {
+                if (p_case === "E") {
+                    fhmod = today;
+                    hrmod = hours;
+                    atmod = this.getUsuarioLogueado();
+                    fhcrn = self.getView().getModel("modelReqPesca").getProperty("/NewReg").FHCRN;
+                    atcrn = self.getView().getModel("modelReqPesca").getProperty("/NewReg").ATCRN;
+                    hrcrn = self.getView().getModel("modelReqPesca").getProperty("/NewReg").HRCRN;
+                } else {
+                    fhcrn = today;
+                    atcrn = self.getView().getModel("modelReqPesca").getProperty("/NewReg").ATCRN;
+                    hrcrn = hours;
+                }
+
+                if (!nrreq) nrreq = "";  
+                var data = "|" + nrreq + "|" + cdpta + "|" + fhreq + "|" + hours + "|" + cnprq + "|" + "0.000" + "|" + esreg + "|" + fhcrn + "|" + hrcrn + "|" + atcrn + "|" + fhmod + "|" + hrmod + "|" + atmod + "|";
+                var objectRT = {
+                        "data": data,
+                        "flag": "X",
+                        "p_case": p_case,
+                        "p_user": this.getUsuarioLogueado(),
+                        "tabla": "ZFLRPS"
+                        };
+          
+                
+                var urlPost = urlNodeJS + "/api/General/Update_Table/";
+
+                $.ajax({
+                    url: urlPost,
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    dataType: 'json',
+                    data: JSON.stringify(objectRT),
+                    success: function (data, textStatus, jqXHR) {
+                        var concatenar = "";
+                        for (let i = 0; i < data.t_mensaje.length; i++) {
+                            concatenar = data.t_mensaje[i].DSMIN + " " + concatenar;
+                        }
+
+                        if (data.CDMIN == "Error") {
+                                MessageBox.error(concatenar);
+                            } else {
+                                MessageBox.success(concatenar);
+                            }
+                            self._onButtonPress();
+                            self._onCloseDialogNewReg();
+                            console.log(data);
+                    },
+                    error: function (xhr, readyState) {
+                        console.log(xhr);
+                    }
+                });
             }
 
-            if (!nrreq) nrreq = "";  
-            var data = "|" + nrreq + "|" + cdpta + "|" + fhreq + "|" + hours + "|" + cnprq + "|" + "0.000" + "|" + esreg + "|" + fhcrn + "|" + hrcrn + "|" + atcrn + "|" + fhmod + "|" + hrmod + "|" + atmod + "|";
-            var objectRT = {
-                    "data": data,
-                    "flag": "X",
-                    "p_case": p_case,
-                    "p_user": "FGARCIA",
-                    "tabla": "ZFLRPS"
-                    };
-   
-            var urlPost = urlNodeJS + "/api/General/Update_Table/";
+        },
 
-            $.ajax({
-                url: urlPost,
-                type: 'POST',
-                cache: false,
-                async: false,
-                dataType: 'json',
-                data: JSON.stringify(objectRT),
-                success: function (data, textStatus, jqXHR) {
-                    if (data.cmin == "Error") {
-                         MessageBox.error(data.dsmin);
-                    //    MessageBox.error("NO SE PUDO INSERTAR, CLAVES DUPLICADAS");
-                    } else {
-                         MessageBox.success(data.dsmin);
-                    }
-                    self._onButtonPress();
-                    self._onCloseDialogNewReg();
-                    console.log(data);
-                },
-                error: function (xhr, readyState) {
-                    console.log(xhr);
-                }
-            });
-
+        getUsuarioLogueado: function () {
+            return "FGARCIA";
         },
         
         _onButtonEditarPress: function (oEvent) {
@@ -586,6 +878,7 @@ sap.ui.define([
             this.getView().getModel('modelReqPesca').setProperty("/p_case", "E");
 
             var cdpta = nrReqSelected.CDPTA;
+            var werks = nrReqSelected.WERKS;
             var atcrn = nrReqSelected.ATCRN;
             var cnpcm = nrReqSelected.CNPCM;
             var cnprq = nrReqSelected.CNPRQ;
@@ -600,19 +893,34 @@ sap.ui.define([
             var nrreq = nrReqSelected.NRREQ;
             var atmod = nrReqSelected.ATMOD;
 
+            if (fhcrn) {
+                var arrFhcrn = fhcrn.split("/");
+                fhcrn = arrFhcrn[2] + arrFhcrn[1] + arrFhcrn[0];
+            }
+
+            if (hrcrn) {
+                var arrHrcrn = hrcrn.split(":");
+                hrcrn = arrHrcrn[0] + arrHrcrn[1] + "00"
+            }
+
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/NRREQ",nrreq);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/FHREQ",fhreq);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/CDPTA",cdpta);
+            self.getView().getModel("modelReqPesca").setProperty("/NewReg/WERKS",werks);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/CNPRQ",cnprq);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/ESREG",esreg);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/FHMOD",fhmod);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/FHCRN",fhcrn);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/ATCRN",atcrn);
             self.getView().getModel("modelReqPesca").setProperty("/NewReg/ATMOD",atmod);
+            self.getView().getModel("modelReqPesca").setProperty("/NewReg/HRCRN",hrcrn);
             
             this.getView().getModel("modelReqPesca").setProperty("/VisibleAuditoria", true);
 
             this._getDialogNewReg().open();
+            this.searchCentroReqPesca();
+            //var oInputNew = this.byId("centroInput");
+			//oInputNew.setSuggestionRowValidator(this.suggestionRowValidator);
         },
 
         getLogonUser: function () {
@@ -642,7 +950,20 @@ sap.ui.define([
             self.getView().getModel("modelReqPesca").setProperty("/Search/DESCR", "");
             self.getView().getModel("modelReqPesca").setProperty("/Search/Numfilas", "200");
             self.getView().getModel("modelReqPesca").setProperty("/ListReqPesca", {});
-        },        
+            self.getView().getModel("modelReqPesca").setProperty("/Search/searchField", "");
+        },
+
+        _onLimpiarCentro: function() {
+            var self = this;
+            this.getView().byId("DRS1").setValue("");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/NRREQ1", "");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/NRREQ2", "");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/FHREQ", "");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/WERKS", "");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/DESCR", "");
+            self.getView().getModel("modelReqPesca").setProperty("/Search/Numfilas", "200");
+            self.getView().getModel("modelReqPesca").setProperty("/ListReqPesca", {});
+        },
 
         _onCloseDialogCentro: function() {
             this._getDialogCentro().close();
@@ -664,9 +985,11 @@ sap.ui.define([
             this.getView().getModel('modelReqPesca').setProperty("/p_case", "N");
             this.getView().getModel("modelReqPesca").setProperty("/NewReg", {});
             this.getView().getModel('modelReqPesca').setProperty("/ProcessNewReg", true);
-            this.getView().getModel('modelReqPesca').setProperty("/NewReg/ATCRN", "FGARCIA");
+            this.getView().getModel('modelReqPesca').setProperty("/NewReg/ATCRN", this.getUsuarioLogueado());
             this.getView().getModel("modelReqPesca").setProperty("/VisibleAuditoria", false);
             this._getDialogNewReg().open();
+            //var oInputNew = this.getView().byId("NewcentroInput");
+			//oInputNew.setSuggestionRowValidator(this.suggestionRowValidatorNew);
         },
 
         _onCloseDialogNewReg: function() {

@@ -80,13 +80,6 @@ sap.ui.define([
             ObtenerZonaArea: function () {
                 var table = "ZFLZAR";
                 var fields = '"ZCDZAR", "ZDSZAR"';
-                /*
-                var CANTIDAD = "40";
-                var CONTROL = "COMBOBOX";
-                var KEY = "ZESZAR";
-                var VALHIGH = "";
-                var VALLOW = "S";
-                */
                 var property = "/ListZonaArea";
                 var options = [];
                 options.push({ cantidad: "40",
@@ -100,13 +93,6 @@ sap.ui.define([
             ObtenerTipoEmba: function () {
                 var table = "ZFLTEM";
                 var fields = '"CDTEM", "DESCR"';
-                /*
-                var CANTIDAD = "40";
-                var CONTROL = "COMBOBOX";
-                var KEY = "ESREG";
-                var VALHIGH = "";
-                var VALLOW = "S";
-                */
                 var property = "/ListTipoEmba";
                 var options = [];
                 options.push({ cantidad: "40",
@@ -121,7 +107,6 @@ sap.ui.define([
 
                 var table = "ZFLPTA";
                 var fields = '"CDPTA", "DESCR"';
-                //var waAux = "(CXALM > 0 OR CXPXD > 0) AND WERKS <> ' ' AND ESREG = 'S'"; //Pending Primera condicion "()"
                 var property = "/ListMovEmba";
                 var options = [];
                 options.push({ cantidad: "40",
@@ -146,9 +131,7 @@ sap.ui.define([
                 
                 var objectRT = {
                     "delimitador": "|",
-                    "fields": [
-                        //fields
-                    ],
+                    "fields": [],
                     "no_data": "",
                     "option": [],
                     "options": options,
@@ -250,13 +233,13 @@ sap.ui.define([
                         var itemSelected = embarcacionesSelectas[j];
                                     
                                 var nrmar = itemSelected.numMarea;
-                                var cdemb = itemSelected.codEmba;  // cdemb o codEmba = "0000000066"; 
+                                var cdemb = itemSelected.codEmba;
                                 var nmemb = itemSelected.descEmba;
                                 var cppms = itemSelected.cbodEmba;
                                 var inprp = itemSelected.indicador;
                                 var cnpdc = itemSelected.pescDecl;
                                 dataEmba.push({ NRMAR: nrmar,
-                                        CDEMB: cdemb, //CDEMB O CODEMBA
+                                        CDEMB: cdemb,
                                         NMEMB: nmemb,
                                         CPPMS: cppms,
                                         INPRP: inprp,
@@ -387,13 +370,7 @@ sap.ui.define([
                                 var ListPlantas = self.getView().getModel("modelDistFlota").getProperty("/ListDistFlota/" +
                                  zonaIndex + "/listaPlantas/" + plantaIndex);
                                 var ListEmbarcaciones = self.getView().getModel("modelDistFlota").getProperty("/ListDistFlota/" +
-                                 zonaIndex + "/listaPlantas/" + plantaIndex + "/listaEmbarcaciones");
-                                
-/*
-                                if (embarcacionesSelectas[i].codEmba === rowSelected.codEmba) {
-                                    this.getView().getModel("modelDistFlota").getProperty("/EmbarcacionesSelectas").splice(i);
-                                }
- */                               
+                                 zonaIndex + "/listaPlantas/" + plantaIndex + "/listaEmbarcaciones");                        
                                 ListPlantas.tot_PescaReq = parseInt(ListPlantas.tot_PescaReq);
                                 
                                 for (var k = 0; k < ListEmbarcaciones.length; k++) {
@@ -486,9 +463,7 @@ sap.ui.define([
                             totCbodDesc = totCbodDesc + parseInt(data.listaTerceros[i].cbodProp);
                             totDeclDesc = totDeclDesc + parseInt(data.listaTerceros[i].pescDeclProp);
                             totEPDesc = totEPDesc + parseInt(data.listaTerceros[i].embaPescProp);
-                            //totPorcDesc = totPorcDesc + parseInt(data.listaTerceros[i].cbodProp);
                             totPorcDesc = "0";
-                            //totDifDesc = totDifDesc + parseInt(data.listaTerceros[i].cbodProp);
                             totDifDesc = "0";
                         }
 
@@ -514,19 +489,11 @@ sap.ui.define([
                         self.getView().getModel("modelDistFlota").setProperty("/totDeclDesc", totDeclDesc);
                         self.getView().getModel("modelDistFlota").setProperty("/totEPDesc", totEPDesc);
                         self.getView().getModel("modelDistFlota").setProperty("/totPorcDesc", totPorcDesc);
-                        self.getView().getModel("modelDistFlota").setProperty("/totDifDesc", totDifDesc);                        
-
-
-                        /*
-                        if (!update) {
-                            self.generarPlantasDinamicas(self);
-                        } else {
-                            self.onAfterRendering();
-                        };
-                        */
+                        self.getView().getModel("modelDistFlota").setProperty("/totDifDesc", totDifDesc);
 
                         self.generarPlantasDinamicas(self);
                         self.onAfterRendering();
+
                         console.log(data);
                     },
                     error: function (xhr, readyState) {
@@ -611,9 +578,11 @@ sap.ui.define([
 
                 }
             },
+
             onSelectionFilter: function() {
                 
                 this.tablesDistribucion(true);
+                MessageBox.success("La actualización se realizo satisfactoriamente");
                                
             },
 
@@ -692,7 +661,7 @@ sap.ui.define([
                     var NumZonasDistri = this.getView().getModel("modelDistFlota").getProperty("/ListDistFlota/" + zonaIndex+ "/zonaName").length;
 
                     
-                    if(zonaIndex % 3 === 0){
+                    if(zonaIndex % 2 === 0){
                         var oHBoxDistribucion = new sap.m.HBox({
                                 width: "100%",
                                 //Id: this.getView.byId("container-distribucionflota---DistribucionFlota--hBoxContent1")
@@ -732,7 +701,7 @@ sap.ui.define([
                             var oHBoxDistribucionPlanta = new sap.m.HBox({
                                 renderType: "Bare",
                                 class: "sapUiNoMargin",
-                                width: "38%"
+                                width: "58%"
                             });
 
                             var oPanelDistribucionPlanta = new sap.m.Panel({
@@ -850,14 +819,14 @@ sap.ui.define([
                                 text : ""
                                 })
                             }), new sap.m.Column({
-                                width: "65px",
-                                //visible: '{modelDistFlota>/ShowTdc}',
+                                width: "70px",
+                                visible: '{modelDistFlota>/ShowTdc}',
                                 header : new sap.m.Label({
                                     text : "Tdc"
                                 })
                             }), new sap.m.Column({
-                                width: "40px",
-                                visible: false,
+                                width: "120px",
+                                visible: '{modelDistFlota>/ShowZonP}',
                                 header : new sap.m.Label({
                                     text : "ZonP"
                                 }),
@@ -865,16 +834,10 @@ sap.ui.define([
                                 text : ""
                                 })
                             }), new sap.m.Column({
-                                width: "40px",
-                                //visible: '{modelDistFlota>/ShowEstSisFrio}',
+                                width: "70px",
+                                visible: '{modelDistFlota>/ShowEstSisFrio}',
                                 header : new sap.m.Label({
                                     text : "SisFrio"
-                                })
-                            }), new sap.m.Column({
-                                width: "10%",
-                                //visible: '{modelDistFlota>/ShowZonP}',
-                                header : new sap.m.Label({
-                                    text : "ZonP"
                                 })
                             }), new sap.m.Column({
                                 width: "10%",

@@ -170,7 +170,7 @@
                                                                         <items>
                                                                             <ColumnListItem>
                                                                                 <cells>
-                                                                                    <Text text="{modelDistFlota>descPlanta}" class="sapMTextEMB" />
+                                                                                    <Text text="{modelDistFlota>descPlanta}" />
                                                                                     <Text text="{ parts: [ {path: 'modelDistFlota>cbodProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
                                                                                     <Text text="{ parts: [ {path: 'modelDistFlota>pescDeclProp'}], formatter : '.formatter.formatoEnteros'}"></Text>
                                                                                     <Text text="{ parts: [ {path: 'modelDistFlota>embaPescProp'}], formatter : '.formatter.formatoEnteros'}"></Text>

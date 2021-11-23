@@ -169,114 +169,127 @@ sap.ui.define([
 
             cargarReqPesca: function () {
                 this.admReqPesca("C");
+                //MessageBox.success("Registro grabado satisfactoriamente");
             },
 
             admReqPesca: function(tpope) {
                 var urlNodeJS = "https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
                 var self = this;
+                var validar = true;
                 var fhitm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHITM;
                 var fhftm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHFTM;
                 var zcdzar = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").ZCDZAR;
 
                 if(tpope === "L"){
 
-                        var objectRT = {
-                            "fieldReqPesca": [],
-                            "ip_ffint": fhftm,
-                            "ip_finit": fhitm,
-                            "ip_tpope": "L",
-                            "ip_zona": zcdzar,
-                            "it_zflrps": [
-                                {
-                                "NRREQ": "",                                    
-                                "CDPTA": "",
-                                "ZDSZAR": "",
-                                "FHREQ": "",
-                                "HRREQ": "",
-                                "CNPRQ": "",
-                                "CNPCM": "",
-                                "AUFNR": ""         
-                                }
-                            ]
-                        };
-        
-                        var urlPost = urlNodeJS + "/api/requerimientopesca/listar";
+                    if ((fhitm && fhitm) || zcdzar) {
 
-                }
-                    
-                if(tpope === "C"){
-
-                    var zflrps = [];
-                    var modelReqPescaxPlanta = self.getView().getModel("modelReqPescaxPlanta").getData();
-                    var oSelectedItem = self.byId("tbl_reqpescaxplanta").getSelectedItems(); 
-
-                        for (var i = 0; i < oSelectedItem.length; i++) {
-                            
-                            var planta = oSelectedItem[i].getCells()[0].getText();
-
-                                for (var j = 0; j < modelReqPescaxPlanta.ListReqPlanta.length; j++){
-
-                                    var itemSelected = modelReqPescaxPlanta.ListReqPlanta[j];
-                                    
-                                    if(planta === itemSelected.zdszar){
-
-                                        var nrreq = itemSelected.nrreq;
-                                        var cdpta = itemSelected.cdpta;
-                                        var zdszar = itemSelected.zdszar;
-                                        var fhreq = itemSelected.fhreq;
-                                        var hrreq = itemSelected.hrreq;
-                                        var cnprq = itemSelected.cnprq;
-                                        var cnpcm = itemSelected.cnpcm;
-                                        var aufnr = itemSelected.aufnr;
-
-                                        fhreq = fhreq.replaceAll("-", "");
-                                        hrreq = hrreq.replaceAll(":", "");
-
-                                        zflrps.push({ NRREQ: nrreq,
-                                                    CDPTA: cdpta,
-                                                    ZDSZAR: zdszar,
-                                                    FHREQ: fhreq,
-                                                    HRREQ: hrreq,
-                                                    CNPRQ: cnprq,
-                                                    CNPCM: cnpcm,
-                                                    AUFNR: aufnr});
+                            var objectRT = {
+                                "fieldReqPesca": [],
+                                "ip_ffint": fhftm,
+                                "ip_finit": fhitm,
+                                "ip_tpope": "L",
+                                "ip_zona": zcdzar,
+                                "it_zflrps": [
+                                    {
+                                    "NRREQ": "",                                    
+                                    "CDPTA": "",
+                                    "ZDSZAR": "",
+                                    "FHREQ": "",
+                                    "HRREQ": "",
+                                    "CNPRQ": "",
+                                    "CNPCM": "",
+                                    "AUFNR": ""         
                                     }
-                                }   
-                            }   
+                                ]
+                            };
+                            var urlPost = urlNodeJS + "/api/requerimientopesca/listar";
+                            validar = true
+                    } else {
+                        validar = false;
+                        MessageBox.error("Faltan datos a seleccionar.");
+                        //break;
+                    }
+                }
+                
+                if(tpope === "C"){
+                    
+                    if (validar) {
+                    
+                        var zflrps = [];
+                        var modelReqPescaxPlanta = self.getView().getModel("modelReqPescaxPlanta").getData();
+                        var oSelectedItem = self.byId("tbl_reqpescaxplanta").getSelectedIndices(); 
+                        if (oSelectedItem > 0) {
 
-                        var objectRT ={ 
-                            "fieldReqPesca": [],
-                            "ip_ffint": fhftm,
-                            "ip_finit": fhitm,
-                            "ip_tpope": "C",
-                            "ip_zona": zcdzar,
-                            "it_zflrps": zflrps
-                        }
-            
-                        var urlPost = urlNodeJS + "/api/requerimientopesca/registrar";
+                            for (var i = 0; i < oSelectedItem.length; i++) {
+                                
+                                var indice = oSelectedItem[i];
+
+                                    var itemSelected = modelReqPescaxPlanta.ListReqPlanta[indice];
+
+                                    var nrreq = itemSelected.nrreq;
+                                    var cdpta = itemSelected.cdpta;
+                                    var zdszar = itemSelected.zdszar;
+                                    var fhreq = itemSelected.fhreq;
+                                    var hrreq = itemSelected.hrreq;
+                                    var cnprq = itemSelected.cnprq;
+                                    var cnpcm = itemSelected.cnpcm;
+                                    var aufnr = itemSelected.aufnr;
+
+                                    fhreq = fhreq.replaceAll("-", "");
+                                    hrreq = hrreq.replaceAll(":", "");
+
+                                    zflrps.push({ NRREQ: nrreq,
+                                                CDPTA: cdpta,
+                                                ZDSZAR: zdszar,
+                                                FHREQ: fhreq,
+                                                HRREQ: hrreq,
+                                                CNPRQ: cnprq,
+                                                CNPCM: cnpcm,
+                                                AUFNR: aufnr});
+                            }
+
+                            var objectRT ={ 
+                                "fieldReqPesca": [],
+                                "ip_ffint": fhftm,
+                                "ip_finit": fhitm,
+                                "ip_tpope": "C",
+                                "ip_zona": zcdzar,
+                                "it_zflrps": zflrps
+                            }
+                
+                            var urlPost = urlNodeJS + "/api/requerimientopesca/registrar";
                             
+                            validar = true;
+                        } else {
+                            validar = false;
+                            MessageBox.error("No se selecciono ninguna planta.");
+                        }
+                    }
                 }
 
-                $.ajax({
-                    url: urlPost,
-                    type: 'POST',
-                    cache: false,
-                    async: false,
-                    dataType: 'json',
-                    data: JSON.stringify(objectRT),
-                    success: function (data, textStatus, jqXHR) {
-                        if (tpope === 'C') {
-                            MessageBox.success("Registro grabado satisfactoriamente");
-                        } else {
-                            self.getView().getModel("modelReqPescaxPlanta").setProperty("/ListReqPlanta", data.s_reqpesca);
+                if (validar) {
+                    $.ajax({
+                        url: urlPost,
+                        type: 'POST',
+                        cache: false,
+                        async: false,
+                        dataType: 'json',
+                        data: JSON.stringify(objectRT),
+                        success: function (data, textStatus, jqXHR) {
+                            if (tpope === 'C') {
+                                MessageBox.success("Registro grabado satisfactoriamente.");
+                            } else {
+                                self.getView().getModel("modelReqPescaxPlanta").setProperty("/ListReqPlanta", data.s_reqpesca);
+                                self.getView().getModel("modelReqPescaxPlanta").setProperty("/RowListReqPlanta", data.s_reqpesca.length);
+                            }
+                            console.log(data);
+                        },
+                        error: function (xhr, readyState) {
+                            console.log(xhr);
                         }
-                        console.log(data);
-                    },
-                    error: function (xhr, readyState) {
-                        console.log(xhr);
-                    }
-                });
-
+                    });
+                }
             },
 
             _onOpenDialogTemporada: function() {

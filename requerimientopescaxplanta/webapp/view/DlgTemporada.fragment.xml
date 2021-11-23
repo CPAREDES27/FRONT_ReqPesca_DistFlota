@@ -12,7 +12,7 @@
                                     <Label text="Cod. Puerto" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input type="Text" showValueHelp="false" value="{modelReqPescaxPlanta>/SearchTemporada/CDPCN}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPescaxPlanta>/SearchTemporada/CDPCN}" enabled="true" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -20,7 +20,7 @@
                                     <Label text="Descripcion" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input type="Text" showValueHelp="false" value="{modelReqPescaxPlanta>/SearchTemporada/DSPCN}" enabled="false" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <Input type="Text" showValueHelp="false" value="{modelReqPescaxPlanta>/SearchTemporada/DSPCN}" enabled="true" visible="true" width="50%" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -28,7 +28,7 @@
                                         <Label text="" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     </form:label>
                                     <form:fields>
-                                        <Button text="Buscar" type="Default" icon="sap-icon://search" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onBuscarButtonPress"/>
+                                        <Button text="Buscar" type="Emphasized" icon="sap-icon://search" iconFirst="true" width="50%" enabled="true" visible="true" iconDensityAware="false" press="_onBuscarButtonPress"/>
                                     </form:fields>
                             </form:FormElement>
                         </form:formElements>
@@ -104,7 +104,7 @@
                 <form:formContainers>
                     <form:FormContainer visible="true">
                         <form:formElements>
-                            <form:FormElement visible="true">
+                            <form:FormElement visible="false">
                                 <form:label>
                                     <Label text="Número de Filas" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
