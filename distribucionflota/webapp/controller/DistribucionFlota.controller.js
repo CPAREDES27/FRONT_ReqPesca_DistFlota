@@ -266,6 +266,7 @@ sap.ui.define([
                         success: function (data, textStatus, jqXHR) {
                             self.getView().getModel("modelDistFlota").setProperty("/EmbarcacionesSelectas", []);
                             self.tablesDistribucion(true);
+                            MessageBox.success(data.dsmin);
                             console.log(data);
                             self._getDialogMovEmbarcacion().close();
                         },
