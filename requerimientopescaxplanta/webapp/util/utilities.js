@@ -7,7 +7,6 @@ sap.ui.define([
 	// class providing static utility methods to retrieve entity default values.
 
 	return {
-
 		loadComboStd2: function (table, filterKey, filterAtt, filterVal, option) {
 			var filterOpt = '';
 			var filtro_pn = '?$filter=' + filterKey + '%20ne%20%27X%27';
@@ -166,8 +165,8 @@ sap.ui.define([
 			date = "/Date(" + date + ")/";
 			return date;
 		},
-		
-		formatTimeBackend: function (time){
+
+		formatTimeBackend: function (time) {
 			if (time.substr(2, 1) === ":") time = "PT" + time.substr(0, 2) + "H" + time.substr(3, 2) + "M" + time.substr(6, 2) + "S";
 			return time;
 		},

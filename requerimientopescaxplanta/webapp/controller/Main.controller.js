@@ -1,21 +1,22 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageBox",
-    "tasa/com/requerimientopescaxplanta/util/formatter"
+    "tasa/com/requerimientopescaxplanta/util/formatter",
+    "tasa/com/requerimientopescaxplanta/util/sessionService",
 ],
-	/**
-	 * @param {typeof sap.ui.core.mvc.Controller} Controller
-	 */
-	function (Controller, MessageBox, formatter) {
-		"use strict";
+    /**
+     * @param {typeof sap.ui.core.mvc.Controller} Controller
+     */
+    function (Controller, MessageBox, formatter, sessionService) {
+        "use strict";
 
-		return Controller.extend("tasa.com.requerimientopescaxplanta.controller.Main", {
+        return Controller.extend("tasa.com.requerimientopescaxplanta.controller.Main", {
             formatter: formatter,
-			onInit: function () {
+            onInit: function () {
                 this.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchTemporada", {});
                 this.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchListar", {});
-                
-            },    
+
+            },
 
             _onBuscarButtonPress: function () {
                 this.searchTemporada();
@@ -25,18 +26,18 @@ sap.ui.define([
                 this._onButtonLimpiar();
             },
 
-            _onButtonLimpiar: function() {
+            _onButtonLimpiar: function () {
                 var self = this;
                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchTemporada/FHITM", "");
                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchTemporada/FHFTM", "");
                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchTemporada/CDPCN", "");
                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/ListReqPlanta", {});
-            },              
+            },
 
             ejecutarReadTable: function (table, options, user, numfilas, model, property) {
 
                 var self = this;
-                var urlNodeJS = "https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
 
 
                 var objectRT = {
@@ -52,7 +53,7 @@ sap.ui.define([
                     "tabla": table
                 };
 
-    
+
                 var urlPost = urlNodeJS + "/api/General/Read_Table/";
 
                 $.ajax({
@@ -72,7 +73,7 @@ sap.ui.define([
                 });
             },
 
-            handleLiveChange : function(oEvent){
+            handleLiveChange: function (oEvent) {
                 var aFilter = [];
                 var sQuery = oEvent.getParameter("query");
 
@@ -80,23 +81,23 @@ sap.ui.define([
                     aFilter.push(new Filter("zdszar", FilterOperator.Contains, sQuery));
                 }
 
-                    // filter binding
+                // filter binding
                 var oList = this.getView().byId("tbl_reqpescaxplanta");
                 var oBinding = oList.getBinding("items");
                 oBinding.filter(aFilter);
 
-            },         
-            
-            onExportar:function(oEvent){
-                let oMaster=oEvent.getSource().getBindingContext().getObject(),
-                aFields = oMaster.fields.filter(oField=>oField.CONTROLTABLE),
-                aColumns=this.createColumnsExport(aFields),
-                oTable=this.getView().byId("tbl_reqpescaxplanta"),
-                aItems = oTable.getModel("modelReqPescaxPlanta").getProperty("/ListReqPlanta");
-                if(!aItems){
+            },
+
+            onExportar: function (oEvent) {
+                let oMaster = oEvent.getSource().getBindingContext().getObject(),
+                    aFields = oMaster.fields.filter(oField => oField.CONTROLTABLE),
+                    aColumns = this.createColumnsExport(aFields),
+                    oTable = this.getView().byId("tbl_reqpescaxplanta"),
+                    aItems = oTable.getModel("modelReqPescaxPlanta").getProperty("/ListReqPlanta");
+                if (!aItems) {
                     let sMessage = "No hay datos para exportar",
-                    sTypeDialog="Warning"
-                    this.getController().getMessageDialog(sTypeDialog,sMessage);
+                        sTypeDialog = "Warning"
+                    this.getController().getMessageDialog(sTypeDialog, sMessage);
                     return;
                 }
                 // oRowBinding=oTable.getBinding('items'),
@@ -104,13 +105,13 @@ sap.ui.define([
                     workbook: { columns: aColumns },
                     dataSource: aItems,
                     fileName: 'Tabla.xlsx',
-                    worker: false 
+                    worker: false
                 },
-                oSheet = new Spreadsheet(oSettings);
-                oSheet.build().finally(function() {
+                    oSheet = new Spreadsheet(oSettings);
+                oSheet.build().finally(function () {
                     oSheet.destroy();
                 });
-            },            
+            },
 
             searchTemporada: function () {
 
@@ -121,26 +122,26 @@ sap.ui.define([
                 var fhftm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHFTM;
 
                 var numfilas = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").Numfilas;
-                
+
                 if (!numfilas) numfilas = 50;
-                            
+
                 var table = "ZV_FLTZ";
-                var user = "FGARCIA";
+                var user = "FGARCIA"; //sessionService.getCurrentUser();
                 var model = "modelReqPescaxPlanta";
                 var property = "/ListTemporada";
                 var options = [];
-                if (cdpcn) options.push({ cantidad: "40", control: "INPUT", "key": "CDPCN", valueHigh: "", valueLow: cdpcn }); 
-                if (dspcn) options.push({ cantidad: "40", control: "INPUT", "key": "DSPCN", valueHigh: "", valueLow: dspcn }); 
-                if (fhitm) options.push({ cantidad: "40", control: "INPUT", "key": "FHITM", valueHigh: "", valueLow: fhitm }); 
-                if (fhftm) options.push({ cantidad: "40", control: "INPUT", "key": "FHFTM", valueHigh: "", valueLow: fhftm }); 
-                
-                self.ejecutarReadTable(table, options, user, numfilas, model, property);                
-            
+                if (cdpcn) options.push({ cantidad: "40", control: "INPUT", "key": "CDPCN", valueHigh: "", valueLow: cdpcn });
+                if (dspcn) options.push({ cantidad: "40", control: "INPUT", "key": "DSPCN", valueHigh: "", valueLow: dspcn });
+                if (fhitm) options.push({ cantidad: "40", control: "INPUT", "key": "FHITM", valueHigh: "", valueLow: fhitm });
+                if (fhftm) options.push({ cantidad: "40", control: "INPUT", "key": "FHFTM", valueHigh: "", valueLow: fhftm });
+
+                self.ejecutarReadTable(table, options, user, numfilas, model, property);
+
             },
 
             _onpress_centrolinkreqpesca: function (oEvent) {
                 let mod = oEvent.getSource().getBindingContext("modelReqPescaxPlanta");
-                let data  =mod.getObject();
+                let data = mod.getObject();
 
                 var cdpcn = data.CDPCN;
                 var fhitm = data.FHITM;
@@ -148,17 +149,17 @@ sap.ui.define([
                 var zcdzar = data.ZCDZAR;
                 var self = this;
 
-                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/CDPCN",cdpcn);
-                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/FHITM",fhitm);
-                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/FHFTM",fhftm);
-                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/ZCDZAR",zcdzar);
+                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/CDPCN", cdpcn);
+                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/FHITM", fhitm);
+                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/FHFTM", fhftm);
+                self.getView().getModel('modelReqPescaxPlanta').setProperty("/SearchTemporada/ZCDZAR", zcdzar);
                 self._onCloseDialogTemporada();
             },
-                
+
             _onSearchReqButton: function () {
                 this.searchReqPesca();
             },
-  
+
             _onCargaReqButton: function () {
                 this.cargarReqPesca();
             },
@@ -172,84 +173,86 @@ sap.ui.define([
                 //MessageBox.success("Registro grabado satisfactoriamente");
             },
 
-            admReqPesca: function(tpope) {
-                var urlNodeJS = "https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+            admReqPesca: function (tpope) {
+                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
                 var self = this;
                 var validar = true;
                 var fhitm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHITM;
                 var fhftm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHFTM;
                 var zcdzar = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").ZCDZAR;
 
-                if(tpope === "L"){
+                if (tpope === "L") {
 
                     if ((fhitm && fhitm) || zcdzar) {
 
-                            var objectRT = {
-                                "fieldReqPesca": [],
-                                "ip_ffint": fhftm,
-                                "ip_finit": fhitm,
-                                "ip_tpope": "L",
-                                "ip_zona": zcdzar,
-                                "it_zflrps": [
-                                    {
-                                    "NRREQ": "",                                    
+                        var objectRT = {
+                            "fieldReqPesca": [],
+                            "ip_ffint": fhftm,
+                            "ip_finit": fhitm,
+                            "ip_tpope": "L",
+                            "ip_zona": zcdzar,
+                            "it_zflrps": [
+                                {
+                                    "NRREQ": "",
                                     "CDPTA": "",
                                     "ZDSZAR": "",
                                     "FHREQ": "",
                                     "HRREQ": "",
                                     "CNPRQ": "",
                                     "CNPCM": "",
-                                    "AUFNR": ""         
-                                    }
-                                ]
-                            };
-                            var urlPost = urlNodeJS + "/api/requerimientopesca/listar";
-                            validar = true
+                                    "AUFNR": ""
+                                }
+                            ]
+                        };
+                        var urlPost = urlNodeJS + "/api/requerimientopesca/listar";
+                        validar = true
                     } else {
                         validar = false;
                         MessageBox.error("Faltan datos a seleccionar.");
                         //break;
                     }
                 }
-                
-                if(tpope === "C"){
-                    
+
+                if (tpope === "C") {
+
                     if (validar) {
-                    
+
                         var zflrps = [];
                         var modelReqPescaxPlanta = self.getView().getModel("modelReqPescaxPlanta").getData();
-                        var oSelectedItem = self.byId("tbl_reqpescaxplanta").getSelectedIndices(); 
+                        var oSelectedItem = self.byId("tbl_reqpescaxplanta").getSelectedIndices();
                         if (oSelectedItem > 0) {
 
                             for (var i = 0; i < oSelectedItem.length; i++) {
-                                
+
                                 var indice = oSelectedItem[i];
 
-                                    var itemSelected = modelReqPescaxPlanta.ListReqPlanta[indice];
+                                var itemSelected = modelReqPescaxPlanta.ListReqPlanta[indice];
 
-                                    var nrreq = itemSelected.nrreq;
-                                    var cdpta = itemSelected.cdpta;
-                                    var zdszar = itemSelected.zdszar;
-                                    var fhreq = itemSelected.fhreq;
-                                    var hrreq = itemSelected.hrreq;
-                                    var cnprq = itemSelected.cnprq;
-                                    var cnpcm = itemSelected.cnpcm;
-                                    var aufnr = itemSelected.aufnr;
+                                var nrreq = itemSelected.nrreq;
+                                var cdpta = itemSelected.cdpta;
+                                var zdszar = itemSelected.zdszar;
+                                var fhreq = itemSelected.fhreq;
+                                var hrreq = itemSelected.hrreq;
+                                var cnprq = itemSelected.cnprq;
+                                var cnpcm = itemSelected.cnpcm;
+                                var aufnr = itemSelected.aufnr;
 
-                                    fhreq = fhreq.replaceAll("-", "");
-                                    hrreq = hrreq.replaceAll(":", "");
+                                fhreq = fhreq.replaceAll("-", "");
+                                hrreq = hrreq.replaceAll(":", "");
 
-                                    zflrps.push({ NRREQ: nrreq,
-                                                CDPTA: cdpta,
-                                                ZDSZAR: zdszar,
-                                                FHREQ: fhreq,
-                                                HRREQ: hrreq,
-                                                CNPRQ: cnprq,
-                                                CNPCM: cnpcm,
-                                                AUFNR: aufnr});
+                                zflrps.push({
+                                    NRREQ: nrreq,
+                                    CDPTA: cdpta,
+                                    ZDSZAR: zdszar,
+                                    FHREQ: fhreq,
+                                    HRREQ: hrreq,
+                                    CNPRQ: cnprq,
+                                    CNPCM: cnpcm,
+                                    AUFNR: aufnr
+                                });
                             }
 
-                            var objectRT ={ 
+                            var objectRT = {
                                 "fieldReqPesca": [],
                                 "ip_ffint": fhftm,
                                 "ip_finit": fhitm,
@@ -257,9 +260,9 @@ sap.ui.define([
                                 "ip_zona": zcdzar,
                                 "it_zflrps": zflrps
                             }
-                
+
                             var urlPost = urlNodeJS + "/api/requerimientopesca/registrar";
-                            
+
                             validar = true;
                         } else {
                             validar = false;
@@ -292,20 +295,20 @@ sap.ui.define([
                 }
             },
 
-            _onOpenDialogTemporada: function() {
-            this._getDialogTemporada().open();
+            _onOpenDialogTemporada: function () {
+                this._getDialogTemporada().open();
             },
 
-            _onCloseDialogTemporada: function() {
+            _onCloseDialogTemporada: function () {
                 this._getDialogTemporada().close();
             },
 
-            _getDialogTemporada : function () {
+            _getDialogTemporada: function () {
                 if (!this._oDialogTemporada) {
                     this._oDialogTemporada = sap.ui.xmlfragment("tasa.com.requerimientopescaxplanta.view.DlgTemporada", this.getView().getController());
                     this.getView().addDependent(this._oDialogTemporada);
                 }
                 return this._oDialogTemporada;
             }
-		});
-	});
+        });
+    });
