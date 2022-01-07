@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "sap/ui/model/Filter",
@@ -17,14 +17,14 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageBox, MessageToast, Filter, FilterOperator,
+    function (BaseController, MessageBox, MessageToast, Filter, FilterOperator,
         JSONModel, exportLibrary, Spreadsheet, CoreLibrary, Token, formatter, Item, BusyIndicator, sessionService) {
         "use strict";
         const HOST = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
         var EdmType = exportLibrary.EdmType;
         var ValueState = CoreLibrary.ValueState;
-
-        return Controller.extend("tasa.com.requerimientopesca.controller.Main", {
+        var usuario="";
+        return BaseController.extend("tasa.com.requerimientopesca.controller.Main", {
 
             formatter: formatter,
             dataTableKeys: [
@@ -130,6 +130,32 @@ sap.ui.define([
                 this._iEvent = 0;
                 */
             },
+            onAfterRendering: function () {
+
+            this._getCurrentUser();    
+
+            },
+            _getCurrentUser: async function(){
+                let oUshell = sap.ushell,
+                oUser={};
+                if(oUshell){
+                    let  oUserInfo =await sap.ushell.Container.getServiceAsync("UserInfo");
+                    let sEmail = oUserInfo.getEmail().toUpperCase(),
+                    sName = sEmail.split("@")[0],
+                    sDominio= sEmail.split("@")[1];
+                    if(sDominio === "XTERNAL.BIZ") sName = "FGARCIA";
+                    oUser = {
+                        name:sName
+                    }
+                }else{
+                    oUser = {
+                        name: "FGARCIA"
+                    }
+                }
+    
+                this.usuario=oUser.name;
+                console.log(this.usuario);
+            },
 
             suggestionRowValidator: function (oColumnListItem) {
                 var aCells = oColumnListItem.getCells();
@@ -175,7 +201,7 @@ sap.ui.define([
                 let oModel = this.getModel(),
                     that = this,
                     iOriginalBusyDelay = this.getView().getBusyIndicatorDelay(),
-                    sUrl = HOST + "/api/General/AppMaestros/",
+                    sUrl = this.onLocation() + "General/AppMaestros/",
                     oParams = {
                         "p_app": "",
                         "p_rol": "ADMINISTRADOR_SISTEMA"
@@ -226,7 +252,7 @@ sap.ui.define([
             ejecutarReadTable: function (table, options, user, numfilas, model, property, callBack) {
 
                 var self = this;
-                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+                //var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
 
 
                 var objectRT = {
@@ -242,7 +268,7 @@ sap.ui.define([
                     "tabla": table
                 };
 
-                var urlPost = urlNodeJS + "/api/General/Read_Table/";
+                var urlPost = this.onLocation() + "General/Read_Table/";
 
                 $.ajax({
                     url: urlPost,
@@ -564,7 +590,7 @@ sap.ui.define([
                     switch (typeValue) {
                         case 'number':
                             propCol.type = EdmType.Number;
-                            propCol.scale = 0;
+                            propCol.scale = 0;                            
                             break;
                         case 'string':
                             propCol.type = EdmType.String;
@@ -789,7 +815,7 @@ sap.ui.define([
 
                 var hours = date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
-                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+               // var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
                 var self = this;
                 var validar = true;
                 var nrreq = self.getView().getModel("modelReqPesca").getProperty("/NewReg").NRREQ;
@@ -835,7 +861,7 @@ sap.ui.define([
                     };
 
 
-                    var urlPost = urlNodeJS + "/api/General/Update_Table/";
+                    var urlPost = this.onLocation() + "General/Update_Table/";
 
                     $.ajax({
                         url: urlPost,
@@ -868,7 +894,7 @@ sap.ui.define([
             },
 
             getUsuarioLogueado: function () {
-                return "FGARCIA"; //sessionService.getCurrentUser()
+                return this.usuario; //sessionService.getCurrentUser()
             },
 
             _onButtonEditarPress: function (oEvent) {

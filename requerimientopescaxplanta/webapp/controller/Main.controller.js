@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/m/MessageBox",
     "tasa/com/requerimientopescaxplanta/util/formatter",
     "tasa/com/requerimientopescaxplanta/util/sessionService",
@@ -7,16 +7,42 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageBox, formatter, sessionService) {
+    function (BaseController, MessageBox, formatter, sessionService) {
         "use strict";
 
-        return Controller.extend("tasa.com.requerimientopescaxplanta.controller.Main", {
+        var usuario="";
+        return BaseController.extend("tasa.com.requerimientopescaxplanta.controller.Main", {
             formatter: formatter,
             onInit: function () {
                 this.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchTemporada", {});
                 this.getView().getModel("modelReqPescaxPlanta").setProperty("/SearchListar", {});
 
             },
+            onAfterRendering: function () {
+
+                this._getCurrentUser();    
+                },
+                _getCurrentUser: async function(){
+                    let oUshell = sap.ushell,
+                    oUser={};
+                    if(oUshell){
+                        let  oUserInfo =await sap.ushell.Container.getServiceAsync("UserInfo");
+                        let sEmail = oUserInfo.getEmail().toUpperCase(),
+                        sName = sEmail.split("@")[0],
+                        sDominio= sEmail.split("@")[1];
+                        if(sDominio === "XTERNAL.BIZ") sName = "FGARCIA";
+                        oUser = {
+                            name:sName
+                        }
+                    }else{
+                        oUser = {
+                            name: "FGARCIA"
+                        }
+                    }
+        
+                    this.usuario=oUser.name;
+                    console.log(this.usuario);
+                },
 
             _onBuscarButtonPress: function () {
                 this.searchTemporada();
@@ -37,7 +63,7 @@ sap.ui.define([
             ejecutarReadTable: function (table, options, user, numfilas, model, property) {
 
                 var self = this;
-                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+               // var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
 
 
                 var objectRT = {
@@ -54,7 +80,7 @@ sap.ui.define([
                 };
 
 
-                var urlPost = urlNodeJS + "/api/General/Read_Table/";
+                var urlPost = this.onLocation() + "General/Read_Table/";
 
                 $.ajax({
                     url: urlPost,
@@ -126,7 +152,7 @@ sap.ui.define([
                 if (!numfilas) numfilas = 50;
 
                 var table = "ZV_FLTZ";
-                var user = "FGARCIA"; //sessionService.getCurrentUser();
+                var user = this.usuario; //sessionService.getCurrentUser();
                 var model = "modelReqPescaxPlanta";
                 var property = "/ListTemporada";
                 var options = [];
@@ -174,12 +200,18 @@ sap.ui.define([
             },
 
             admReqPesca: function (tpope) {
-                var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
+                //var urlNodeJS = sessionService.getHostService(); //"https://cf-nodejs-qas.cfapps.us10.hana.ondemand.com";
                 var self = this;
                 var validar = true;
                 var fhitm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHITM;
                 var fhftm = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").FHFTM;
                 var zcdzar = self.getView().getModel("modelReqPescaxPlanta").getProperty("/SearchTemporada").ZCDZAR;
+
+
+                var fhitm = this.byId("idFechaInicio").getValue();
+                var fhftm = this.byId("idFechaInicio").getValue();
+
+                
 
                 if (tpope === "L") {
 
@@ -204,7 +236,9 @@ sap.ui.define([
                                 }
                             ]
                         };
-                        var urlPost = urlNodeJS + "/api/requerimientopesca/listar";
+                        console.log(objectRT);
+
+                        var urlPost = this.onLocation() + "requerimientopesca/listar";
                         validar = true
                     } else {
                         validar = false;
@@ -260,8 +294,8 @@ sap.ui.define([
                                 "ip_zona": zcdzar,
                                 "it_zflrps": zflrps
                             }
-
-                            var urlPost = urlNodeJS + "/api/requerimientopesca/registrar";
+                            console.log(objectRT);
+                            var urlPost = this.onLocation() + "requerimientopesca/registrar";
 
                             validar = true;
                         } else {
@@ -270,7 +304,7 @@ sap.ui.define([
                         }
                     }
                 }
-
+                    
                 if (validar) {
                     $.ajax({
                         url: urlPost,
@@ -280,13 +314,14 @@ sap.ui.define([
                         dataType: 'json',
                         data: JSON.stringify(objectRT),
                         success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+
                             if (tpope === 'C') {
                                 MessageBox.success("Registro grabado satisfactoriamente.");
                             } else {
                                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/ListReqPlanta", data.s_reqpesca);
                                 self.getView().getModel("modelReqPescaxPlanta").setProperty("/RowListReqPlanta", data.s_reqpesca.length);
                             }
-                            console.log(data);
                         },
                         error: function (xhr, readyState) {
                             console.log(xhr);
@@ -309,6 +344,8 @@ sap.ui.define([
                     this.getView().addDependent(this._oDialogTemporada);
                 }
                 return this._oDialogTemporada;
-            }
+            },
+
+           
         });
     });

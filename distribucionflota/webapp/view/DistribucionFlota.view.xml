@@ -130,7 +130,8 @@
                                                                 <content>
                                                                     <Table id="table" inset="false" items="{modelDistFlota>/listTotal}">
                                                                         <columns>
-                                                                            <Column width="150px">
+                                                                            <Column width="150px" >
+                                                                                
                                                                                 <Text text="Planta"/>
                                                                                 <footer>   
                                                                                     <Text id="idFoote2" text="Total General:"/>

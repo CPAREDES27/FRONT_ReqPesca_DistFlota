@@ -24,7 +24,7 @@
                                         <Label text="Fecha Inicio" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     </form:label>
                                     <form:fields>
-                                        <DatePicker width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHITM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
+                                        <DatePicker id="idFechaInicio" width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHITM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
                                     </form:fields>
                                 </form:FormElement>
                                 <form:FormElement visible="true">
@@ -32,7 +32,7 @@
                                         <Label text="Fecha Fin" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     </form:label>
                                     <form:fields>
-                                        <DatePicker width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHFTM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
+                                        <DatePicker id="idFechaFin" width="50%" displayFormat="dd/MM/YYYY" value="{modelReqPescaxPlanta>/SearchTemporada/FHFTM}" required="false" valueStateText="Invalid entry" enabled="true" visible="true" valueFormat="yyyyMMdd"/>
                                     </form:fields>
                                 </form:FormElement>
                                 <form:FormElement visible="true">
@@ -146,13 +146,21 @@
                         </OverflowToolbar>
                     </t:extension>
 					<t:columns>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="zdszar"
+                            filterProperty="zdszar"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Planta"/>
 							<t:template>
 								<Text text="{modelReqPescaxPlanta>zdszar}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="cnprq"
+                            filterProperty="cnprq"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Requerimiento"/>
 							<t:template>
 								<Input type="Text" textAlign="End" showValueHelp="false" value="{modelReqPescaxPlanta>cnprq}" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>

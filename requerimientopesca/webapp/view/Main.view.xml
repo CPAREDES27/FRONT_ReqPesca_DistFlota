@@ -172,79 +172,140 @@
                         </OverflowToolbar>
                     </t:extension>
 					<t:columns>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="NRREQ"
+                            filterProperty="NRREQ"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="N° Requerimiento"/>
 							<t:template>
 								<ObjectIdentifier title="" text="{modelReqPesca>NRREQ}" titleActive="false" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="FHREQ"
+                            filterProperty="FHREQ"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Fecha"/>
 							<t:template>
 								<Text text="{modelReqPesca>FHREQ}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="WERKS"
+                            filterProperty="WERKS"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Centro"/>
 							<t:template>
 								<Text text="{modelReqPesca>WERKS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="DESCR"
+                            filterProperty="DESCR"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Planta"/>
 							<t:template>
 								<Text text="{modelReqPesca>DESCR}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="MEINS"
+                            filterProperty="MEINS"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Unidad"/>
 							<t:template>
 								<Text text="{modelReqPesca>MEINS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%" hAlign="End"
+                            sortProperty="CNPRQ"
+                            filterProperty="CNPRQ"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Cant. Req."/>
 							<t:template>
-								<Text text="{modelReqPesca>CNPRQ}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-							</t:template>
+								<!--<Text text="{modelReqPesca>CNPRQ}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                                <Text text="{path:'modelReqPesca>CNPRQ', type:'sap.ui.model.type.Float',
+												formatOptions:{
+													minIntegerDigits:1,
+													minFractionDigits:3,
+													maxFractionDigits:3,
+													groupingEnabled:true,
+													groupingSeparator: ',',
+													decimalSeparator: '.'
+												}}" wrapping="false"/>
+                            </t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="DESC_ESREG"
+                            filterProperty="DESC_ESREG"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="Estado"/>
 							<t:template>
 								<Text text="{modelReqPesca>DESC_ESREG}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="FHCRN"
+                            filterProperty="FHCRN"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="F. Creación"/>
 							<t:template>
 								<Text text="{modelReqPesca>FHCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="HRCRN"
+                            filterProperty="HRCRN"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="H. Creación"/>
 							<t:template>
 								<Text text="{modelReqPesca>HRCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="ATCRN"
+                            filterProperty="ATCRN"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="U. Creación"/>
 							<t:template>
 								<Text text="{modelReqPesca>ATCRN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="HRMOD"
+                            filterProperty="HRMOD"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="H. Modificación"/>
 							<t:template>
 								<Text text="{modelReqPesca>HRMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-						<t:Column width="16%">
+						<t:Column width="16%"
+                            sortProperty="FHMOD"
+                            filterProperty="FHMOD"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="F. Modificación"/>
 							<t:template>
 								<Text text="{modelReqPesca>FHMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 							</t:template>
 						</t:Column>
-                        <t:Column width="16%">
+                        <t:Column width="16%"
+                            sortProperty="ATMOD"
+                            filterProperty="ATMOD"
+                            showFilterMenuEntry="true"
+                            showSortMenuEntry="true">
 							<Label text="U. Modificación"/>
 							<t:template>
 								<Text text="{modelReqPesca>ATMOD}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>

@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/table/RowSettings",
     "sap/m/MessageBox",
     "sap/m/MessageToast",
@@ -12,10 +12,12 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, RowSettings, MessageBox, MessageToast, JSONModel, CustomData, formatter, BusyIndicator, sessionService) {
+    function (BaseController, RowSettings, MessageBox, MessageToast, JSONModel, CustomData, formatter, BusyIndicator, sessionService) {
         "use strict";
+        var oGlobalBusyDialog = new sap.m.BusyDialog();
 
-        return Controller.extend("tasa.com.distribucionflota.controller.DistribucionFlota", {
+        var usuario="";
+        return BaseController.extend("tasa.com.distribucionflota.controller.DistribucionFlota", {
 
             formatter: formatter,
             onInit: function () {
@@ -77,6 +79,31 @@ sap.ui.define([
                     }
 
                 }
+            this._getCurrentUser();    
+
+            },
+            
+            
+            _getCurrentUser: async function(){
+                let oUshell = sap.ushell,
+                oUser={};
+                if(oUshell){
+                    let  oUserInfo =await sap.ushell.Container.getServiceAsync("UserInfo");
+                    let sEmail = oUserInfo.getEmail().toUpperCase(),
+                    sName = sEmail.split("@")[0],
+                    sDominio= sEmail.split("@")[1];
+                    if(sDominio === "XTERNAL.BIZ") sName = "FGARCIA";
+                    oUser = {
+                        name:sName
+                    }
+                }else{
+                    oUser = {
+                        name: "FGARCIA"
+                    }
+                }
+    
+                this.usuario=oUser.name;
+                console.log(this.usuario);
             },
 
             ObtenerZonaArea: function () {
@@ -146,13 +173,13 @@ sap.ui.define([
                     "option": [],
                     "options": options,
                     "order": "",
-                    "p_user": "FGARCIA", //sessionService.getCurrentUser(),
+                    "p_user": this.usuario, //sessionService.getCurrentUser(),
                     "rowcount": 50,
                     "rowskips": 0,
                     "tabla": table
                 };
 
-                var urlPost = urlNodeJS + "/api/General/Read_Table/";
+                var urlPost = this.onLocation() + "General/Read_Table/";
 
                 $.ajax({
                     url: urlPost,
@@ -203,7 +230,7 @@ sap.ui.define([
                 };
 
 
-                var urlPost = urlNodeJS + "/api/dominios/Listar";
+                var urlPost = this.onLocation()  + "dominios/Listar";
 
                 $.ajax({
                     url: urlPost,
@@ -263,10 +290,10 @@ sap.ui.define([
                     var objectRT = {
                         "data": dataEmba,
                         "p_cdtpa": cdpta,
-                        "p_user": "FGARCIA" //sessionService.getCurrentUser(),
+                        "p_user": this.usuario //sessionService.getCurrentUser(),
                     };
 
-                    var urlPost = urlNodeJS + "/api/embarcacion/MoverEmbarcacion/";
+                    var urlPost = this.onLocation() + "embarcacion/MoverEmbarcacion/";
 
                     $.ajax({
                         url: urlPost,
@@ -357,10 +384,11 @@ sap.ui.define([
                     "p_inprp": inprp,
                     "p_inubc": inubc,
                     "p_numFilas": numfl,
-                    "p_user": "FGARCIA" //sessionService.getCurrentUser(),
+                    "p_user": "this.usuario " //sessionService.getCurrentUser(),
                 }
 
-                var urlPost = urlNodeJS + "/api/distribucionflota/listar";
+                //var url=this.onLocation();
+                var urlPost = this.onLocation() + "distribucionflota/listar";
 
                 $.ajax({
                     url: urlPost,
